@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import $ from 'jquery';
+import { FormGroup, FormControl } from 'react-bootstrap';
 
 export default class SearchBox extends React.Component{
   constructor(props){
@@ -60,15 +61,17 @@ export default class SearchBox extends React.Component{
     const inputProps = this._inputProps();
 
     return (
-      <Autosuggest
-        suggestions={this.state.suggestions}
-        onSuggestionsFetchRequested={this._onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this._onSuggestionsClearRequested}
-        getSuggestionValue={this._getSuggestionValue}
-        renderSuggestion={this._renderSuggestion}
-        inputProps={inputProps}
-        onSuggestionSelected={this._onSuggestionSelected}
-        shouldRenderSuggestions={this._shouldRenderSuggestions} />
+      <FormGroup>
+        <Autosuggest
+          suggestions={this.state.suggestions}
+          onSuggestionsFetchRequested={this._onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this._onSuggestionsClearRequested}
+          getSuggestionValue={this._getSuggestionValue}
+          renderSuggestion={this._renderSuggestion}
+          inputProps={inputProps}
+          onSuggestionSelected={this._onSuggestionSelected}
+          shouldRenderSuggestions={this._shouldRenderSuggestions} />
+      </FormGroup>
     );
   }
 }
