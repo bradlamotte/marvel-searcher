@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
-import Characters from './characters'
+import HeroPage from './pages/hero-page'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import Header from './components/header'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src="http://www.captaincomic.com/eBaypictures/Marvel222.png" className="App-logo" alt="logo" />
-          <h2>Marvel Heroes</h2>
+      <Router>
+        <div className="App">
+          <Header />
+
+          <div className="App-body">
+            <Switch>
+              <Route exact path="/">
+                <Redirect to="/hero" />
+              </Route>
+              <Route path="/hero" component={HeroPage} />
+            </Switch>
+          </div>
         </div>
-        <div className="mainContent">
-          <Characters />
-        </div>
-      </div>
+      </Router>
     );
   }
 }

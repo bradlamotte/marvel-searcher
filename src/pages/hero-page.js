@@ -1,8 +1,8 @@
 import React from 'react';
-import SearchBox from './search-box';
-import Character from './character';
+import SearchBox from '../components/search-box';
+import Character from '../components/character';
 
-export default class Characters extends React.Component{
+export default class HeroPage extends React.Component{
   constructor(props) {
     super(props);
     this.state = {character: null};
@@ -15,7 +15,7 @@ export default class Characters extends React.Component{
 
   render(){
     return(
-      <div id="characters">
+      <div id="hero-page">
         <SearchBox onCharacterFound={this.onCharacterFound} />
         {this.state.character && <Character character={this.state.character} />}
       </div>
