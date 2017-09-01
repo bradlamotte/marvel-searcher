@@ -7,7 +7,7 @@ export default class MarvelImage extends React.Component{
   }
 
   _url(){
-    return `${this.props.imageData.path}/${this._style()}.${this.props.imageData.extension}`;
+    return `${this.props.imageData.path}/${this.props.style}.${this.props.imageData.extension}`;
   }
 
   render(){
@@ -17,9 +17,28 @@ export default class MarvelImage extends React.Component{
 
 MarvelImage.propTypes = {
   imageData: PropTypes.shape({ path: PropTypes.string, extension: PropTypes.string }),
-  style: PropTypes.oneOf(['small', 'medium', 'xlarge', 'fantastic', 'uncanny', 'incredible'])
+  style: PropTypes.oneOf([
+    'portrait_small',
+    'portrait_medium',
+    'portrait_xlarge',
+    'portrait_fantastic',
+    'portrait_uncanny',
+    'portrait_incredible',
+    'standard_small',
+    'standard_medium',
+    'standar_large',
+    'standard_xlarge',
+    'standard_fantastic',
+    'standard_amazing',
+    'landscape_small',
+    'landscape_medium',
+    'landscape_large',
+    'landscape_xlarge',
+    'landscape_amazing',
+    'landscape_incredible'
+  ])
 };
 
 MarvelImage.defaultProps = {
-  style: 'uncanny'
+  style: 'portrait_uncanny'
 };

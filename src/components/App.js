@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
-import HeroPage from './pages/hero-page'
+import '../style/App.css';
+import HeroPage from '../pages/hero-page'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
-import Header from './components/header'
+import Header from './header'
 
 class App extends Component {
   render() {

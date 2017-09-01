@@ -6,17 +6,17 @@ export default class HeroPage extends React.Component{
   constructor(props) {
     super(props);
     this.state = {character: null};
-    this.onCharacterFound = this.onCharacterFound.bind(this);
+    this.onResultSelected = this.onResultSelected.bind(this);
   }
 
-  onCharacterFound(character){
+  onResultSelected(character){
     this.setState({character: character});
   }
 
   render(){
     return(
       <div id="hero-page">
-        <SearchBox onCharacterFound={this.onCharacterFound} />
+        <SearchBox onResultSelected={this.onResultSelected} />
         {this.state.character && <Character character={this.state.character} />}
       </div>
     );

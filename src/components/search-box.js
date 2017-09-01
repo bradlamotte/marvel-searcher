@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import $ from 'jquery';
-import { FormGroup, FormControl } from 'react-bootstrap';
+import { FormGroup } from 'react-bootstrap';
+import '../style/search-box.css';
+import MarvelImage from './marvel-image';
 
 export default class SearchBox extends React.Component{
   constructor(props){
@@ -23,6 +25,7 @@ export default class SearchBox extends React.Component{
   };
 
   _onSuggestionsFetchRequested = ({ value }) => {
+    this.props.onResultSelected(null);
     let endpoint = process.env.REACT_APP_MARVEL_ENDPOINT;
     let apiKey = process.env.REACT_APP_MARVEL_API_KEY;
     let searchUrl = `${endpoint}/characters?nameStartsWith=${value}&apikey=${apiKey}`;
@@ -36,7 +39,14 @@ export default class SearchBox extends React.Component{
 
   _shouldRenderSuggestions = value => value.trim().length >= 3;
 
-  _renderSuggestion = suggestion => suggestion.name;
+  _renderSuggestion = suggestion => {
+    return (
+      <div>
+        <MarvelImage imageData={suggestion.thumbnail} style="standard_small" />
+        {suggestion.name}
+      </div>
+    );
+  }
 
   _onSuggestionsClearRequested = () => {
     this.setState({
@@ -46,12 +56,12 @@ export default class SearchBox extends React.Component{
 
   _onSuggestionSelected = (event, { suggestion }) => {
     this.setState({value: ''});
-    this.props.onCharacterFound(suggestion);
+    this.props.onResultSelected(suggestion);
   }
 
   _inputProps(){
     return {
-      placeholder: "Hero name",
+      placeholder: `${this.props.type || 'Hero'} name`,
       value: this.state.value,
       onChange: this._onChange
     };
@@ -61,21 +71,27 @@ export default class SearchBox extends React.Component{
     const inputProps = this._inputProps();
 
     return (
-      <FormGroup>
-        <Autosuggest
-          suggestions={this.state.suggestions}
-          onSuggestionsFetchRequested={this._onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this._onSuggestionsClearRequested}
-          getSuggestionValue={this._getSuggestionValue}
-          renderSuggestion={this._renderSuggestion}
-          inputProps={inputProps}
-          onSuggestionSelected={this._onSuggestionSelected}
-          shouldRenderSuggestions={this._shouldRenderSuggestions} />
-      </FormGroup>
+      <div className="search-area">
+        <FormGroup>
+          <div className="help-block">
+            Search for your favorite hero and suggestions will be provided.
+          </div>
+          <Autosuggest
+            suggestions={this.state.suggestions}
+            onSuggestionsFetchRequested={this._onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this._onSuggestionsClearRequested}
+            getSuggestionValue={this._getSuggestionValue}
+            renderSuggestion={this._renderSuggestion}
+            inputProps={inputProps}
+            onSuggestionSelected={this._onSuggestionSelected}
+            shouldRenderSuggestions={this._shouldRenderSuggestions}
+            />
+        </FormGroup>
+      </div>
     );
   }
 }
 
 SearchBox.propTypes = {
-  onCharacterFound: PropTypes.func.isRequired
+  onResultSelected: PropTypes.func.isRequired
 };

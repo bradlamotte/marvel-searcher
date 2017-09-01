@@ -40,7 +40,7 @@ export default class Header extends React.Component{
             </LinkContainer>
           </Nav>
           <Nav pullRight className="tagline">
-            Find all your favorite Marvel stuff.
+            Find all your favorite Marvel stuff here
           </Nav>
         </Navbar.Collapse>
       </Navbar>
