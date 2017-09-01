@@ -1,6 +1,7 @@
 import React from 'react';
-import SearchBox from '../components/search-box';
+import CharacterSearchBox from '../components/character-search-box';
 import Character from '../components/character';
+import { PageHeader } from 'react-bootstrap';
 
 export default class HeroPage extends React.Component{
   constructor(props) {
@@ -16,7 +17,8 @@ export default class HeroPage extends React.Component{
   render(){
     return(
       <div id="hero-page">
-        <SearchBox onResultSelected={this.onResultSelected} />
+        <PageHeader>Heroes</PageHeader>
+        <CharacterSearchBox onResultSelected={this.onResultSelected} />
         {this.state.character && <Character character={this.state.character} />}
       </div>
     );

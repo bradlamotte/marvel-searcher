@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class MarvelImage extends React.Component{
-  _style(){
-    return `portrait_${this.props.style}`;
-  }
-
   _url(){
-    return `${this.props.imageData.path}/${this.props.style}.${this.props.imageData.extension}`;
+    return `${this.props.imageData.path}/${this.props.imageStyle}.${this.props.imageData.extension}`;
   }
 
   render(){
@@ -17,8 +13,7 @@ export default class MarvelImage extends React.Component{
 
 MarvelImage.propTypes = {
   imageData: PropTypes.shape({ path: PropTypes.string, extension: PropTypes.string }),
-  style: PropTypes.oneOf([
-    'portrait_small',
+  imageStyle: PropTypes.oneOf([
     'portrait_medium',
     'portrait_xlarge',
     'portrait_fantastic',
@@ -40,5 +35,5 @@ MarvelImage.propTypes = {
 };
 
 MarvelImage.defaultProps = {
-  style: 'portrait_uncanny'
+  imageStyle: 'portrait_uncanny'
 };

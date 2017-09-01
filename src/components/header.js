@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../img/marvel-logo.png';
@@ -17,7 +16,7 @@ export default class Header extends React.Component{
 
   render(){
     return(
-      <Navbar collapseOnSelect={true}>
+      <Navbar collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
             <LinkContainer to="/hero">

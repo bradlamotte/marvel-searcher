@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../style/App.css';
 import HeroPage from '../pages/hero-page'
+import ComicPage from '../pages/comic-page'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import Header from './header'
 
@@ -11,12 +12,13 @@ class App extends Component {
         <div className="App">
           <Header />
 
-          <div className="App-body">
+          <div className="App-body container">
             <Switch>
               <Route exact path="/">
                 <Redirect to="/hero" />
               </Route>
               <Route path="/hero" component={HeroPage} />
+              <Route path="/comic" component={ComicPage} />
             </Switch>
           </div>
         </div>
