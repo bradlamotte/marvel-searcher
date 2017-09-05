@@ -7,7 +7,11 @@ export default class MarvelImage extends React.Component{
   }
 
   render(){
-    return <img src={this._url()} alt="Marvel" />;
+    if(this.props.imageData){
+      return <img src={this._url()} alt="Marvel" />;
+    } else {
+      return false;
+    }
   }
 }
 
