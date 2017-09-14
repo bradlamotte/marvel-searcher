@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "API backend for Marvel Searcher app",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha routes/characters.test.js -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.4",
+    "express-validator": "^4.1.1",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.3",
+    "nock": "^9.0.14",
+    "should": "^13.0.1",
+    "supertest": "^3.0.0"
+  }
+}
