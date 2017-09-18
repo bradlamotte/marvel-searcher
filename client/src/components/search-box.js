@@ -23,14 +23,12 @@ export default class SearchBox extends React.Component{
 
   _onSuggestionsFetchRequested = ({ value }) => {
     this.props.onResultSelected(null);
-    let endpoint = process.env.REACT_APP_MARVEL_ENDPOINT;
-    let apiKey = process.env.REACT_APP_MARVEL_API_KEY;
-    let searchUrl = `${endpoint}/${this.props.marvelDept}?${this.props.marvelFilter}=${value}&apikey=${apiKey}`;
+    const searchUrl = `characters?search_term=${value}`;
 
-    $.getJSON(searchUrl, (results) => {
-      let _suggestions = results.data.count > 0 ? results.data.results : [];
-      this.setState({ suggestions: _suggestions });
+    $.getJSON(searchUrl, (response) => {
+      this.setState({ suggestions: response.results });
     });
+
     return [];
   };
 

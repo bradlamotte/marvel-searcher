@@ -1,15 +1,13 @@
 const request = require('supertest');
-const app = require('../app');
-const nock = require('nock');
+const app = require('../../app');
+const MarvelDataMock = require('../mocks/marvel-data-mock');
 
-describe('Character search', function(){
+describe('characters.test.js', function(){
 
-  // Mock external requests to Marvel endpoint
+  // Mock external requests to Marvel endpoint with successful response
   beforeEach(() => {
-    nock(process.env.MARVEL_ENDPOINT)
-      .get('/characters')
-      .query(true)
-      .reply(200, [{name: 'Hulk', description: 'Strong guy'}, {one: 'two'}]);
+    const mock = new MarvelDataMock();
+    mock.character_search();
   });
 
   describe('with missing search term', function(){
@@ -38,12 +36,12 @@ describe('Character search', function(){
         .expect(200, done);
     });
 
-    it('should respond with an Array', function(done){
+    it('should respond with an object containing Results as an Array', function(done){
       request(app)
         .get('/characters')
         .set({search_term: 'hulk'})
         .expect(function(res){
-          if(!Array.isArray(res.body)){
+          if(!Array.isArray(res.body.results)){
             throw new Error('Response is not an array');
           }
         })
