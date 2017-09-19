@@ -12,20 +12,20 @@ const handleValidationErrors = (request, response, next) => {
   }
 }
 
-router.route('/')
-
-  // Search for Marvel characters by name
-  // Will return an array of characters matched by beginning of their name
-  // Parameter search_term must be at least 3 characters long
-  .get(
-    check('search_term', 'Search term must be at least 3 characters long.').isLength({ min: 3 }),
-    handleValidationErrors,
-    (req, res) => {
-      const marvel = new MarvelData();
-      marvel.search(req.query.search_term, (results) => {
-        res.json({ results: results });
-      });
-    }
-  );
+// Search for Marvel characters by name
+// Will return an array of characters matched by beginning of their name
+// Parameter search_term must be at least 3 characters long
+router.get('/',
+  check('search_term')
+    .isLength({ min: 3 })
+    .withMessage('Search term must be at least 3 characters long.'),
+  handleValidationErrors,
+  (req, res) => {
+    const marvel = new MarvelData();
+    marvel.character_search(req.query.search_term, (results) => {
+      res.json({ results: results });
+    });
+  }
+);
 
 module.exports = router;

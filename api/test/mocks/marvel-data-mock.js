@@ -10,6 +10,15 @@ class MarvelDataMock{
       .query(true)
       .reply(200, {data: {results: [{name: 'Hulk', description: 'Strong guy'}]}});
     }
+
+  // Mock a successful response with results when searching for
+  // comics on Marvel API
+  comic_search(){
+    nock(process.env.MARVEL_ENDPOINT)
+      .get('/comics')
+      .query(true)
+      .reply(200, {data: {results: [{title: 'Spider-Man', description: 'Spider stories'}]}});
+    }
 }
 
 module.exports = MarvelDataMock;

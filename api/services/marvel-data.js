@@ -29,10 +29,21 @@ class MarvelData{
   }
 
   // Call Marvel api to search for characters by name
-  search(search_term, callback){
+  character_search(search_term, callback){
     if(search_term == '') { throw new Error("Search term cannot be empty") };
     this._validateCallback(callback);
     let requestConfig = this._requestConfig('/characters', { nameStartsWith: search_term });
+
+    request(requestConfig, (error, response, body) => {
+      callback(JSON.parse(body).data.results);
+    });
+  }
+
+  // Call Marvel api to search for comics by name
+  comic_search(search_term, callback){
+    if(search_term == '') { throw new Error("Search term cannot be empty") };
+    this._validateCallback(callback);
+    let requestConfig = this._requestConfig('/comics', { titleStartsWith: search_term });
 
     request(requestConfig, (error, response, body) => {
       callback(JSON.parse(body).data.results);

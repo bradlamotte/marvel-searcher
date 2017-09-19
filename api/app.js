@@ -1,8 +1,9 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 require('dotenv').load();
 
-var characterRoutes = require('./routes/characters');
-app.use('/characters', characterRoutes)
+// Routes
+app.use('/characters', require('./routes/characters'));
+app.use('/comics', require('./routes/comics'));
 
 module.exports = app;
