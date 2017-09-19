@@ -23,7 +23,7 @@ export default class SearchBox extends React.Component{
 
   _onSuggestionsFetchRequested = ({ value }) => {
     this.props.onResultSelected(null);
-    const searchUrl = `characters?search_term=${value}`;
+    const searchUrl = `${this.props.searchPath}?search_term=${value}`;
 
     $.getJSON(searchUrl, (response) => {
       this.setState({ suggestions: response.results });
@@ -88,6 +88,5 @@ SearchBox.propTypes = {
 
 SearchBox.defaultProps = {
   type: 'hero',
-  marvelDept: 'characters',
-  marvelFilter: 'nameStartsWith'
+  searchPath: 'characters'
 };

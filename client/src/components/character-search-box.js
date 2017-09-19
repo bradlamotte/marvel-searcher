@@ -6,8 +6,7 @@ import MarvelImage from './marvel-image';
 export default class CharacterSearchBox extends React.Component{
   constructor(props){
     super(props);
-    this.MARVEL_DEPT = 'characters';
-    this.MARVEL_FILTER = 'nameStartsWith';
+    this.SEARCH_PATH = 'characters';
   }
 
   _getSuggestionValue = suggestion => suggestion.name;
@@ -24,8 +23,7 @@ export default class CharacterSearchBox extends React.Component{
   render(){
     return <SearchBox
       onResultSelected={this.props.onResultSelected}
-      marvelDept={this.MARVEL_DEPT}
-      marvelFilter={this.MARVEL_FILTER}
+      searchPath={this.SEARCH_PATH}
       renderSuggestion={this._renderSuggestion}
       getSuggestionValue={this._getSuggestionValue}
       />
