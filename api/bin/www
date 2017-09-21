@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 
 const app = require('../app');
+const db = require('../db/db');
 
-app.listen(3001, function () {
-  console.log("Running Express");
+db.connect(function(err) {
+  if (err) {
+    console.log('Unable to connect to Mongo.')
+    process.exit(1)
+  } else {
+    console.log("Connected to Mongo at", process.env.MONGODB_ENDPOINT);
+    app.listen(3001, function () {
+      console.log("Running API on port 3001");
+    });
+  }
 });

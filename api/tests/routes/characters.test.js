@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../app');
 const MarvelDataMock = require('../mocks/marvel-data-mock');
 
-describe('characters.test.js', function(){
+describe('routes/characters', function(){
 
   // Mock external requests to Marvel endpoint with successful response
   beforeEach(() => {

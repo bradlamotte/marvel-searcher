@@ -3,7 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const MarvelData = require('../services/marvel-data');
 
-const handleValidationErrors = (request, response, next) => {
+const handleRequestValidationErrors = (request, response, next) => {
   const errors = validationResult(request);
   if (!errors.isEmpty()) {
     return response.status(422).json({ errors: errors.mapped() });
@@ -19,7 +19,7 @@ router.get('/',
   check('search_term')
     .isLength({ min: 3 })
     .withMessage('Search term must be at least 3 characters long.'),
-  handleValidationErrors,
+  handleRequestValidationErrors,
   (req, res) => {
     const marvel = new MarvelData();
     marvel.character_search(req.query.search_term, (results) => {
