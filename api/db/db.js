@@ -15,6 +15,10 @@ exports.connect = function(done) {
   })
 }
 
+exports.endpoint = function(){
+  return endpoint;
+}
+
 exports.get = function() {
   return state.db
 }

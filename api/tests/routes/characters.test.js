@@ -51,4 +51,52 @@ describe('routes/characters', function(){
     });
   });
 
+  describe('finding', function(){
+
+    describe('with non-integer characterId', function(){
+      it('should respond with 422 status', function(done){
+        request(app)
+          .get('/characters/test')
+          .expect(422, done);
+      });
+    });
+
+    describe('with characterId that does not correspond to a character', function(){
+      beforeEach(() => {
+        const mock = new MarvelDataMock();
+        mock.character_find_invalid();
+      });
+
+      it('should respond with 404 status', function(done){
+        request(app)
+          .get('/characters/123456789')
+          .expect(404, done);
+      });
+    });
+
+    describe('with valid characterId', function(){
+      beforeEach(() => {
+        const mock = new MarvelDataMock();
+        mock.character_find_valid();
+      });
+
+      it('should respond with valid content type and status', function(done){
+        request(app)
+          .get('/characters/123')
+          .expect('Content-Type', /json/)
+          .expect(200, done);
+      });
+
+      it('should respond with an object containing Character as an object', function(done){
+        request(app)
+          .get('/characters/123')
+          .expect((res)=>{
+            res.body.should.have.property('character');
+          })
+          .end(done);
+      });
+    });
+
+  });
+
 });

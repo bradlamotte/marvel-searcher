@@ -51,7 +51,7 @@ class Character{
             reject(new HttpNotFoundError("We couldn't find that character", 404));
           } else {
             const data = JSON.parse(body).data.results[0];
-            character = new Character(data);
+            const character = new Character(data);
             resolve(character);
           }
         });

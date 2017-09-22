@@ -59,7 +59,7 @@ describe('models/character', function(){
     describe('with characterId that has no corresponding character', function(){
       before(() => {
         const mock = new MarvelDataMock();
-        mock.find_invalid();
+        mock.character_find_invalid();
       });
 
       it('should be rejected with HttpNotFoundError', function(done){
@@ -70,7 +70,7 @@ describe('models/character', function(){
     describe('with valid characterId', function(){
       before(() => {
         const mock = new MarvelDataMock();
-        mock.find_valid();
+        mock.character_find_valid();
       });
 
       it('should respond with Character object', function(done){

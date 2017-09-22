@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const Character = require('../models/character');
+const HttpNotFoundError = require('../errors/http-not-found-error');
 
 const handleRequestValidationErrors = (request, response, next) => {
   const errors = validationResult(request);
@@ -13,7 +14,8 @@ const handleRequestValidationErrors = (request, response, next) => {
 };
 
 const handleProcessingError = (response, err) => {
-  return response.status(422).json({ error: err.message });
+  const status = (err instanceof HttpNotFoundError) ? 404 : 422;
+  response.status(status).json({ error: err.message });
 };
 
 // Search for Marvel characters by name
@@ -34,5 +36,17 @@ router.get('/',
       });
   }
 );
+
+// Find a specific Marvel character
+// Will return a single character data
+router.get('/:id', function(req, res){
+  Character.find(req.params.id)
+    .then((results)=>{
+      res.json({ character: results });
+      })
+    .catch((err)=>{
+      handleProcessingError(res, err);
+    });
+});
 
 module.exports = router;

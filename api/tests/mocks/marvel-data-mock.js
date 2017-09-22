@@ -12,7 +12,7 @@ class MarvelDataMock{
     }
 
   // Mock a response when a character cannot be found with the supplied id
-  find_invalid(){
+  character_find_invalid(){
     nock(process.env.MARVEL_ENDPOINT)
       .get(/\/characters\/.+/)
       .query(true)
@@ -20,7 +20,7 @@ class MarvelDataMock{
   }
 
   // Mock a response when a character is successlly found
-  find_valid(){
+  character_find_valid(){
     nock(process.env.MARVEL_ENDPOINT)
       .get(/\/characters\/.+/)
       .query(true)

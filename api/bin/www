@@ -8,9 +8,9 @@ db.connect(function(err) {
     console.log('Unable to connect to Mongo.')
     process.exit(1)
   } else {
-    console.log("Connected to Mongo at", process.env.MONGODB_ENDPOINT);
+    console.log("Connected to Mongo at", db.endpoint());
     app.listen(3001, function () {
-      console.log("Running API on port 3001");
+      console.log("Running API at", `http://${process.env.HOST}:3001`);
     });
   }
 });
