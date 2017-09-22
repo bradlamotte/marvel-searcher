@@ -35,6 +35,22 @@ class MarvelDataMock{
       .query(true)
       .reply(200, {data: {results: [{title: 'Spider-Man', description: 'Spider stories'}]}});
     }
+
+    // Mock a response when a comic cannot be found with the supplied id
+    comic_find_invalid(){
+      nock(process.env.MARVEL_ENDPOINT)
+        .get(/\/comics\/.+/)
+        .query(true)
+        .reply(404);
+    }
+
+    // Mock a response when a character is successlly found
+    comic_find_valid(){
+      nock(process.env.MARVEL_ENDPOINT)
+        .get(/\/comics\/.+/)
+        .query(true)
+        .reply(200, {data: {results: [{id: 59551, name: 'Hulk and Friends', description: 'Strong guy with his strong friends'}]}});
+    }
 }
 
 module.exports = MarvelDataMock;
