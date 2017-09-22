@@ -18,8 +18,11 @@ class Favorite{
   static count(callback){
     return new Promise((resolve, reject)=>{
       db.favorites().find().count((err, cnt)=>{
-        if(err) reject(err);
-        resolve(cnt);
+        if(err){
+          reject(err)
+        } else {
+          resolve(cnt);
+        }
       });
     });
   }
@@ -35,8 +38,11 @@ class Favorite{
         db.favorites().insertOne(
           this._toInsertJSON(),
           (err, result)=>{
-            if(err) reject(err);
-            resolve();
+            if(err){
+              reject(err)
+            } else {
+              resolve();
+            }
           }
         );
       } catch (err) {

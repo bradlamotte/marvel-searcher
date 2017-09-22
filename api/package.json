@@ -15,6 +15,7 @@
     "express-validator": "^4.1.1",
     "merge": "^1.2.0",
     "mongodb": "^2.2.31",
+    "node-exceptions": "^2.0.2",
     "promise": "^8.0.1",
     "request": "^2.81.0"
   },
