@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const Comic = require('../models/comic');
+const HttpNotFoundError = require('../errors/http-not-found-error');
 
 const handleValidationErrors = (request, response, next) => {
   const errors = validationResult(request);
@@ -13,9 +14,9 @@ const handleValidationErrors = (request, response, next) => {
 }
 
 const handleProcessingError = (response, err) => {
-  return response.status(422).json({ error: err.message });
+  const status = (err instanceof HttpNotFoundError) ? 404 : 422;
+  response.status(status).json({ error: err.message });
 };
-
 
 // Search for Marvel comics by name
 // Will return an array of comics matched by beginning of their name
@@ -35,5 +36,17 @@ router.get('/',
       });
   }
 );
+
+// Find a specific Marvel comic
+// Will return a single comic data
+router.get('/:id', function(req, res){
+  Comic.find(req.params.id)
+    .then((results)=>{
+      res.json({ comic: results });
+      })
+    .catch((err)=>{
+      handleProcessingError(res, err);
+    });
+});
 
 module.exports = router;
