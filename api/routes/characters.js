@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
-const MarvelData = require('../services/marvel-data');
+const Character = require('../models/character');
 
 const handleRequestValidationErrors = (request, response, next) => {
   const errors = validationResult(request);
@@ -10,7 +10,11 @@ const handleRequestValidationErrors = (request, response, next) => {
   } else {
     next();
   }
-}
+};
+
+const handleProcessingError = (response, err) => {
+  return response.status(422).json({ error: err.message });
+};
 
 // Search for Marvel characters by name
 // Will return an array of characters matched by beginning of their name
@@ -21,10 +25,13 @@ router.get('/',
     .withMessage('Search term must be at least 3 characters long.'),
   handleRequestValidationErrors,
   (req, res) => {
-    const marvel = new MarvelData();
-    marvel.character_search(req.query.search_term, (results) => {
-      res.json({ results: results });
-    });
+    Character.search(req.query.search_term)
+      .then((results)=>{
+        res.json({ results: results });
+        })
+      .catch((err)=>{
+        handleProcessingError(res, err);
+      });
   }
 );
 

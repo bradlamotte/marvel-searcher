@@ -1,26 +1,17 @@
-require('dotenv').load();
-const DB = require('../../db/db');
+const Setup = require('../setup');
 const Favorite = require('../../models/favorite');
-const chai = require('chai');
-const chaiAsPromised = require("chai-as-promised");
-chai.use(chaiAsPromised);
-const should = chai.should();
+const MarvelDataMock = require('../mocks/marvel-data-mock');
 
 describe('models/favorite', function(){
   before(function(done) {
-    DB.connect(done);
+    Setup.db_connection(done);
   });
 
   beforeEach(function() {
-    const db = DB.get();
-    db.listCollections().forEach(
-      function(collection) {
-        db.collection(collection.name).remove()
-      }
-    );
+    Setup.clear_db();
   });
 
-  describe('Add', function(){
+  describe('add', function(){
 
     describe('with non-integer characterId', function(){
       it('should be rejected with TypeError', function(done){

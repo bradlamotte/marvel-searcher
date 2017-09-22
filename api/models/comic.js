@@ -1,24 +1,24 @@
 const request = require('request');
 const MarvelData = require('../services/marvel-data');
 
-class Character{
+class Comic{
 
   constructor(params){
     this._id = params._id;
-    this.characterId = params.characterId;
-    this.name = params.name;
+    this.comicId = params.comicId;
+    this.title = params.title;
     this.description = params.description;
     this.imageUrl = params.imageUrl;
   }
 
-  // Calls Marvel api to search for characters by name
+  // Calls Marvel api to search for comics by name
   // Class method
   // Returns a Promise
   static search(search_term){
     return new Promise((resolve, reject)=>{
       if(!search_term) { reject(new TypeError("Search term cannot be empty")) };
       if(search_term.length < 3) { reject(new TypeError("Search term must be at least 3 characters")) };
-      let requestConfig = MarvelData.requestConfig('/characters', { nameStartsWith: search_term });
+      let requestConfig = MarvelData.requestConfig('/comics', { titleStartsWith: search_term });
 
       request(requestConfig, (error, response, body) => {
         if(error) reject(error);
@@ -28,4 +28,4 @@ class Character{
   }
 }
 
-module.exports = Character;
+module.exports = Comic;

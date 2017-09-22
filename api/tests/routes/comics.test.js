@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../app');
 const MarvelDataMock = require('../mocks/marvel-data-mock');
 
-describe('comics.test.js', function(){
+describe('routes/comics', function(){
 
   // Mock external requests to Marvel endpoint with successful response
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe('comics.test.js', function(){
     it('should respond with valid content type and status', function(done){
       request(app)
         .get('/comics')
-        .set({search_term: 'spider'})
+        .query({search_term: 'spider'})
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
@@ -39,11 +39,9 @@ describe('comics.test.js', function(){
     it('should respond with an object containing Results as an Array', function(done){
       request(app)
         .get('/comics')
-        .set({search_term: 'spider'})
-        .expect(function(res){
-          if(!Array.isArray(res.body.results)){
-            throw new Error('Response is not an array');
-          }
+        .query({search_term: 'spider'})
+        .expect((res)=>{
+          res.body.should.have.property('results');
         })
         .end(done);
     });

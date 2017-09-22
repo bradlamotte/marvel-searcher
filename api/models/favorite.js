@@ -1,5 +1,7 @@
 const db = require('../db/db');
+const request = require('request');
 const Promise = require('promise');
+const MarvelData = require('../services/marvel-data');
 
 class Favorite{
 
@@ -10,6 +12,9 @@ class Favorite{
     });
   }
 
+  // Returns the total number of favorites in the database
+  // Class method
+  // Returns a Promise
   static count(callback){
     return new Promise((resolve, reject)=>{
       db.favorites().find().count((err, cnt)=>{
