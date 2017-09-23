@@ -3,7 +3,6 @@ import CharacterSearchBox from '../components/character-search-box';
 import Character from '../components/character';
 import { PageHeader } from 'react-bootstrap';
 import $ from 'jquery';
-import { withRouter } from 'react-router-dom';
 
 class HeroPage extends React.Component{
   constructor(props) {
@@ -16,27 +15,31 @@ class HeroPage extends React.Component{
   }
 
   componentDidMount() {
-    const characterId = this.props.match.params.characterId;
-    if(characterId) this._getCharacter(characterId);
+    this._getCharacter(this.props.match.params.characterId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this._getCharacter(nextProps.match.params.characterId);
   }
 
   _getCharacter(characterId){
-    $.getJSON(`/characters/${characterId}`)
-      .done((response)=>{
-        console.log("character retrieved", response.character);
-        this.setState({ character: response.character });
-        })
-      .fail((response)=>{
-        console.log("error getting character", response.responseJSON);
-        this.setState({ errorMessage: response.responseJSON.error });
-      });
+    if(characterId){
+      $.getJSON(`/characters/${characterId}`)
+        .done((response)=>{
+          console.log("character retrieved", response.character);
+          this.setState({ character: response.character });
+          })
+        .fail((response)=>{
+          console.log("error getting character", response.responseJSON);
+          this.setState({ errorMessage: response.responseJSON.error });
+        });
+    }
   }
 
   onResultSelected(character){
     if(character && character.id){
       this.setState({ errorMessage: '' });
       this.props.history.push(`/heroes/${character.id}`);
-      this._getCharacter(character.id);
     }
   }
 
@@ -66,4 +69,4 @@ class HeroPage extends React.Component{
   }
 }
 
-export default withRouter(HeroPage);
+export default HeroPage;

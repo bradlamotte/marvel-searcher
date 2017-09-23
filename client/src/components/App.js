@@ -18,7 +18,7 @@ class App extends Component {
                 <Redirect to="/heroes" />
               </Route>
               <Route path="/heroes/:characterId?" component={HeroPage} />
-              <Route path="/comics" component={ComicPage} />
+              <Route path="/comics/:comicId?" component={ComicPage} />
             </Switch>
           </div>
         </div>

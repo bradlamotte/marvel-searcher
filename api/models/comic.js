@@ -46,7 +46,7 @@ class Comic{
           if(error){
             reject(error);
           } else if(response.statusCode == 404){
-            reject(new HttpNotFoundError("We couldn't find that character", 404));
+            reject(new HttpNotFoundError("We couldn't find that comic", 404));
           } else {
             const data = JSON.parse(body).data.results[0];
             const comic = new Comic(data);
