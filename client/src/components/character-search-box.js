@@ -6,7 +6,7 @@ import MarvelImage from './marvel-image';
 export default class CharacterSearchBox extends React.Component{
   constructor(props){
     super(props);
-    this.SEARCH_PATH = 'characters';
+    this.SEARCH_PATH = '/characters';
   }
 
   _getSuggestionValue = suggestion => suggestion.name;
