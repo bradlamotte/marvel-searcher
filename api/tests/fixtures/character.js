@@ -5,7 +5,10 @@ class CharacterFixture{
       id: 123,
       name: "Hulk",
       description: "Strong guy",
-      imageUrl: "testimage.com"
+      thumbnail: {
+        path: "testimage",
+        extension: "jpg"
+      }
     };
   }
 }

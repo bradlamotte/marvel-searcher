@@ -6,16 +6,6 @@ const HttpNotFoundError = require('../../errors/http-not-found-error');
 
 describe('models/comic', function(){
 
-  describe('when initialized with all valid attributes', function(){
-    it('should set all attributes', function(done){
-      data = ComicFixture.valid();
-      comic = new Comic(data);
-      delete comic._id
-      comic.should.deep.equal(data);
-      done();
-    });
-  });
-
   describe('search', function(){
 
     beforeEach(() => {
