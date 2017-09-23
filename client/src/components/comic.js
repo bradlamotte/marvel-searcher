@@ -17,7 +17,7 @@ export default class Comic extends React.Component{
               </div>
             </Col>
             <Col sm={4} smPull={8}>
-              <MarvelImage imageData={this.props.comic.thumbnail} />
+              <MarvelImage imageData={this.props.comic.imageData} />
             </Col>
           </Row>
         </Grid>

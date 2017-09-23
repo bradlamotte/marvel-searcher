@@ -5,11 +5,10 @@ const HttpNotFoundError = require('../errors/http-not-found-error');
 class Comic{
 
   constructor(params){
-    this._id = params._id; // maps to database ID
     this.id = params.id;
     this.title = params.title;
     this.description = params.description;
-    this.imageUrl = params.imageUrl;
+    this.imageData = params.thumbnail;
   }
 
   // Calls Marvel api to search for comics by name
