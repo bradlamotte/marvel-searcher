@@ -15,10 +15,10 @@ class App extends Component {
           <div className="App-body container">
             <Switch>
               <Route exact path="/">
-                <Redirect to="/hero" />
+                <Redirect to="/heroes" />
               </Route>
-              <Route path="/hero" component={HeroPage} />
-              <Route path="/comic" component={ComicPage} />
+              <Route path="/heroes/:characterId?" component={HeroPage} />
+              <Route path="/comics" component={ComicPage} />
             </Switch>
           </div>
         </div>
@@ -26,5 +26,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App;

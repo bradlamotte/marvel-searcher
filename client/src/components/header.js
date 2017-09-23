@@ -19,7 +19,7 @@ export default class Header extends React.Component{
       <Navbar collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <LinkContainer to="/hero">
+            <LinkContainer to="/heroes">
               <a>
                 <img src={logo} className="app-logo" alt="logo" />
                 Marvel Searcher
@@ -31,10 +31,10 @@ export default class Header extends React.Component{
 
         <Navbar.Collapse>
           <Nav activeKey={this.state.activeNavKey}>
-            <LinkContainer to="/hero">
+            <LinkContainer to="/heroes">
               <NavItem eventKey={1} onSelect={this.handleNavSelect}>Heroes</NavItem>
             </LinkContainer>
-            <LinkContainer to="/comic">
+            <LinkContainer to="/comics">
               <NavItem eventKey={2} onSelect={this.handleNavSelect}>Comics</NavItem>
             </LinkContainer>
           </Nav>
