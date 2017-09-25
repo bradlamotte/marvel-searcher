@@ -1,9 +1,18 @@
 const Setup = require('../setup');
 const request = require('supertest');
 const app = require('../../app');
+const Favorite = require('../../models/favorite');
 const MarvelDataMock = require('../mocks/marvel-data-mock');
 
 describe('routes/characters', function(){
+
+  before(function(done) {
+    Setup.db_connection(done);
+  });
+
+  beforeEach(function(done) {
+    Setup.clear_db(done);
+  });
 
   describe('searching', function(){
 
@@ -75,25 +84,39 @@ describe('routes/characters', function(){
     });
 
     describe('with valid characterId', function(){
+      let req;
+
       beforeEach(() => {
         const mock = new MarvelDataMock();
         mock.character_find_valid();
+        req = request(app).get('/characters/123');
       });
 
       it('should respond with valid content type and status', function(done){
-        request(app)
-          .get('/characters/123')
+        req
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
 
       it('should respond with an object containing Character as an object', function(done){
-        request(app)
-          .get('/characters/123')
+        req
           .expect((res)=>{
             res.body.should.have.property('character');
           })
           .end(done);
+      });
+
+      it('should respond with a boolean favorite flag', function(done){
+        const favorite = new Favorite({characterId: 123});
+
+        favorite.add()
+          .then(result => {
+            req.expect((res)=>{
+              res.body.should.have.property('favorite', true);
+            })
+            .end(done);
+          })
+          .catch(done);
       });
     });
 

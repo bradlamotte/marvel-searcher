@@ -2,8 +2,17 @@ const Setup = require('../setup');
 const request = require('supertest');
 const app = require('../../app');
 const MarvelDataMock = require('../mocks/marvel-data-mock');
+const Favorite = require('../../models/favorite');
 
 describe('routes/comics', function(){
+
+  before(function(done) {
+    Setup.db_connection(done);
+  });
+
+  beforeEach(function(done) {
+    Setup.clear_db(done);
+  });
 
   describe('searching', function(){
 
@@ -94,6 +103,21 @@ describe('routes/comics', function(){
             res.body.should.have.property('comic');
           })
           .end(done);
+      });
+
+      it('should respond with a boolean favorite flag', function(done){
+        const favorite = new Favorite({comicId: 123});
+
+        favorite.add()
+          .then(result => {
+            request(app)
+              .get('/comics/123')
+              .expect((res)=>{
+                res.body.should.have.property('favorite', true);
+              })
+            .end(done);
+          })
+          .catch(done);
       });
     });
   });

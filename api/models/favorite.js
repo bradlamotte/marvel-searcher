@@ -70,6 +70,10 @@ class Favorite{
     }
   }
 
+  // Class method
+  // Queries db for favorites
+  // Accepts a parms object containing either characterId or comicId
+  // Returns a Promise
   static get(params = {}){
     return new Promise((resolve, reject)=>{
       const characterId = parseInt(params.characterId);

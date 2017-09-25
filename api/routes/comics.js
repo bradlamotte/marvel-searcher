@@ -3,6 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const Comic = require('../models/comic');
 const HttpNotFoundError = require('../errors/http-not-found-error');
+const Favorite = require('../models/favorite');
 
 const handleValidationErrors = (request, response, next) => {
   const errors = validationResult(request);
@@ -40,10 +41,19 @@ router.get('/',
 // Find a specific Marvel comic
 // Will return a single comic data
 router.get('/:id', function(req, res){
+  let comic;
+
   Comic.find(req.params.id)
-    .then((results)=>{
-      res.json({ comic: results });
-      })
+    .then(result => {
+      comic = result;
+      return Favorite.get({comicId: req.params.id});
+    })
+    .then(favorite => {
+      res.json({
+        favorite: (favorite.comicId == req.params.id),
+        comic: comic
+      });
+    })
     .catch((err)=>{
       handleProcessingError(res, err);
     });

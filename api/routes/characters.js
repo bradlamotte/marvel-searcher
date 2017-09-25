@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const Character = require('../models/character');
+const Favorite = require('../models/favorite');
 const HttpNotFoundError = require('../errors/http-not-found-error');
 
 const handleRequestValidationErrors = (request, response, next) => {
@@ -40,10 +41,19 @@ router.get('/',
 // Find a specific Marvel character
 // Will return a single character data
 router.get('/:id', function(req, res){
+  let character;
+
   Character.find(req.params.id)
-    .then((results)=>{
-      res.json({ character: results });
-      })
+    .then(result => {
+      character = result;
+      return Favorite.get({characterId: req.params.id});
+    })
+    .then(favorite => {
+      res.json({
+        favorite: (favorite.characterId == req.params.id),
+        character: character
+      });
+    })
     .catch((err)=>{
       handleProcessingError(res, err);
     });
