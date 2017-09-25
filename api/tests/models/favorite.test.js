@@ -135,4 +135,108 @@ describe('models/favorite', function(){
     });
 
   });
+
+  describe('remove', function(){
+
+    describe('with non-integer characterId', function(){
+      it('should be rejected with TypeError', function(done){
+        Favorite.get({characterId: 'test'}).should.be.rejectedWith(TypeError, 'valid characterId or comicId').notify(done);
+      });
+    });
+
+    describe('with non-integer comicId', function(){
+      it('should be rejected with TypeError', function(done){
+        Favorite.get({comicId: 'test'}).should.be.rejectedWith(TypeError, 'valid characterId or comicId').notify(done);
+      });
+    });
+
+    describe('with characterId and comicId', function(){
+      it('should be rejected with TypeError', function(done){
+        Favorite.get({characterId: 123, comicId: 123}).should.be.rejectedWith(TypeError, 'cannot both be passed').notify(done);
+      });
+    });
+
+    describe('with characterId not in db', function(){
+      it('should not delete anything from db', function(done){
+        const favorite = new Favorite({characterId: 123});
+        let initialCnt;
+
+        // get count of favorites before any action
+        Favorite.count().then(cnt=>{
+          initialCnt = cnt;
+        })
+        .then(favorite.remove.bind(favorite)) // remove favorite
+        .then(Favorite.count) // get db count after remove
+        .then(finalCnt => {
+          // db count should be same as initial count
+          finalCnt.should.equal(initialCnt);
+          done();
+        })
+        .catch(done);
+      });
+    });
+
+    describe('with characterId in db', function(){
+      it('should delete 1 record from db', function(done){
+        const favorite = new Favorite({characterId: 123});
+        let initialCnt;
+
+        favorite.add()
+        .then(Favorite.count)
+        .then(cnt => {
+          initialCnt = cnt;
+        })
+        .then(favorite.remove.bind(favorite)) // remove favorite
+        .then(Favorite.count) // get db count after add
+        .then(finalCnt => {
+          // db count should have been decremented by 1
+          finalCnt.should.equal(initialCnt - 1);
+          done();
+        })
+        .catch(done);
+      });
+    });
+
+    describe('with comicId not in db', function(){
+      it('should not delete anything from db', function(done){
+        const favorite = new Favorite({comicId: 123});
+        let initialCnt;
+
+        // get count of favorites before any action
+        Favorite.count().then(cnt=>{
+          initialCnt = cnt;
+        })
+        .then(favorite.remove.bind(favorite)) // remove favorite
+        .then(Favorite.count) // get db count after remove
+        .then(finalCnt => {
+          // db count should be same as initial count
+          finalCnt.should.equal(initialCnt);
+          done();
+        })
+        .catch(done);
+      });
+    });
+
+    describe('with comicId in db', function(){
+      it('should delete 1 record from db', function(done){
+        const favorite = new Favorite({comicId: 123});
+        let initialCnt;
+
+        favorite.add()
+        .then(Favorite.count)
+        .then(cnt => {
+          initialCnt = cnt;
+        })
+        .then(favorite.remove.bind(favorite)) // remove favorite
+        .then(Favorite.count) // get db count after add
+        .then(finalCnt => {
+          // db count should have been decremented by 1
+          finalCnt.should.equal(initialCnt - 1);
+          done();
+        })
+        .catch(done);
+      });
+    });
+
+  });
 });

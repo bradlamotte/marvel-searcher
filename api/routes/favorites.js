@@ -47,4 +47,35 @@ router.post('/',
   }
 );
 
+// Remove a favorite for either character or comic
+// Expects either characterId or comicId parameter
+router.delete('/',
+  check('test')
+    .custom((value, { req }) => {
+      const characterId = parseInt(req.query.characterId);
+      const comicId = parseInt(req.query.comicId);
+
+      if(!characterId && !comicId){
+        throw new TypeError("A characterId or comicId is required");
+      }
+
+      if(characterId && comicId){
+        throw new TypeError("CharacterId and comicId cannot both be set");
+      }
+      return true;
+    }),
+  handleRequestValidationErrors,
+  (req, res) => {
+    const favorite = new Favorite(req.query);
+    favorite.remove()
+      .then(result => {
+        res.json({favorite: result});
+        })
+      .catch(err => {
+        handleProcessingError(res, err);
+      });
+
+  }
+);
+
 module.exports = router;

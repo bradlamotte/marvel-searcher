@@ -8,11 +8,11 @@ describe('routes/favorites', function(){
     Setup.db_connection(done);
   });
 
-  describe('adding', function(){
+  beforeEach(function(done) {
+    Setup.clear_db(done);
+  });
 
-    beforeEach(function(done) {
-      Setup.clear_db(done);
-    });
+  describe('adding', function(){
 
     describe('with no characterId or comicId', function(){
       it('should respond with 422 status', function(done){
@@ -86,6 +86,65 @@ describe('routes/favorites', function(){
             res.body.should.have.property('favorite');
           })
           .end(done);
+      });
+    });
+
+  });
+
+  describe('removing', function(){
+
+    describe('with no characterId or comicId', function(){
+      it('should respond with 422 status', function(done){
+        request(app)
+          .delete('/favorites')
+          .expect(422, done);
+      });
+    });
+
+    describe('with both characterId and comicId', function(){
+      it('should respond with 422 status', function(done){
+        request(app)
+          .delete('/favorites')
+          .query({characterId: 123, comicId: 456})
+          .expect(422, done);
+      });
+    });
+
+    describe('with non-integer characterId', function(){
+      it('should respond with 422 status', function(done){
+        request(app)
+          .delete('/favorites')
+          .query({characterId: 'test'})
+          .expect(422, done);
+      });
+    });
+
+    describe('with non-integer comicId', function(){
+      it('should respond with 422 status', function(done){
+        request(app)
+          .delete('/favorites')
+          .query({comicId: 'test'})
+          .expect(422, done);
+      });
+    });
+
+    describe('with valid characterId', function(){
+      it('should respond with valid content type and status', function(done){
+        request(app)
+          .delete('/favorites')
+          .query({characterId: 123})
+          .expect('Content-Type', /json/)
+          .expect(200, done);
+      });
+    });
+
+    describe('with valid comicId', function(){
+      it('should respond with valid content type and status', function(done){
+        request(app)
+          .delete('/favorites')
+          .query({comicId: 123})
+          .expect('Content-Type', /json/)
+          .expect(200, done);
       });
     });
 

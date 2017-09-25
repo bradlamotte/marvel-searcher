@@ -107,6 +107,40 @@ class Favorite{
     });
 
   }
+
+  // Removes a favorite from the database.
+  // Validates model attributes before inserting.
+  // Class method
+  // Returns a Promise
+  remove(){
+    return new Promise((resolve, reject)=>{
+      try{
+        this.validate();
+
+        db.favorites().deleteOne(
+          this._toDeleteJSON(),
+          (err, result)=>{
+            if(err){
+              reject(err)
+            } else {
+              resolve(this);
+            }
+          }
+        );
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  // Object format used to delete from database
+  _toDeleteJSON(){
+    if(this.characterId){
+      return { characterId: this.characterId };
+    } else if(this.comicId){
+      return { comicId: this.comicId };
+    }
+  }
 }
 
 module.exports = Favorite;
