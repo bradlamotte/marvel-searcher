@@ -106,13 +106,15 @@ describe('routes/characters', function(){
           .end(done);
       });
 
-      it('should respond with a boolean favorite flag', function(done){
+      it('should respond with a correct favorite data', function(done){
         const favorite = new Favorite({characterId: 123});
 
+        // add a new favorite
         favorite.add()
           .then(result => {
+            // make request to find a character
             req.expect((res)=>{
-              res.body.should.have.property('favorite', true);
+              res.body.favorite.should.deep.equal({characterId: 123});
             })
             .end(done);
           })

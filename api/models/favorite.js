@@ -86,14 +86,16 @@ class Favorite{
       } else {
 
         let query;
+        let project;
 
         if(characterId){
           query = { characterId: characterId };
+          project = {characterId: true, _id: false};
         } else if(comicId){
-          query = { comicId: comicId };
+          project = {comicId: true, _id: false};
         }
 
-        db.favorites().find(query).toArray((err, results) => {
+        db.favorites().find(query, project).toArray((err, results) => {
           if(err){
             reject(err);
           } else {

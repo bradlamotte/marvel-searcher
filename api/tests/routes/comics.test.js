@@ -105,15 +105,17 @@ describe('routes/comics', function(){
           .end(done);
       });
 
-      it('should respond with a boolean favorite flag', function(done){
+      it('should respond with a correct favorite data', function(done){
         const favorite = new Favorite({comicId: 123});
 
+        // insert new favorite
         favorite.add()
           .then(result => {
             request(app)
               .get('/comics/123')
+              // make request to find a comic
               .expect((res)=>{
-                res.body.should.have.property('favorite', true);
+                res.body.favorite.should.deep.equal({comicId: 123});
               })
             .end(done);
           })

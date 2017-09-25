@@ -50,7 +50,7 @@ router.get('/:id', function(req, res){
     })
     .then(favorite => {
       res.json({
-        favorite: (favorite.characterId == req.params.id),
+        favorite: favorite,
         character: character
       });
     })
