@@ -69,6 +69,38 @@ class Favorite{
       throw new TypeError('A characterId and comicId cannot both be set.');
     }
   }
+
+  static get(params = {}){
+    return new Promise((resolve, reject)=>{
+      const characterId = parseInt(params.characterId);
+      const comicId = parseInt(params.comicId);
+
+      if(!characterId && !comicId){
+        reject(new TypeError("A valid characterId or comicId must be passed in"));
+      } else if(characterId && comicId){
+        reject(new TypeError("A characterId and comicId cannot both be passed in"));
+      } else {
+
+        let query;
+
+        if(characterId){
+          query = { characterId: characterId };
+        } else if(comicId){
+          query = { comicId: comicId };
+        }
+
+        db.favorites().find(query).toArray((err, results) => {
+          if(err){
+            reject(err);
+          } else {
+            const favorite = results.length > 0 ? results[0] : {};
+            resolve(favorite);
+          }
+        });
+      }
+    });
+
+  }
 }
 
 module.exports = Favorite;
