@@ -3,13 +3,15 @@ import ComicSearchBox from '../components/comic-search-box';
 import Comic from '../components/comic';
 import { PageHeader } from 'react-bootstrap';
 import $ from 'jquery';
+import FavoriteControl from '../components/favorite-control';
 
 export default class ComicPage extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
       comic: null,
-      errorMessage: ''
+      errorMessage: '',
+      isFavorite: false
     };
     this.onResultSelected = this.onResultSelected.bind(this);
   }
@@ -27,8 +29,11 @@ export default class ComicPage extends React.Component{
       $.getJSON(`/comics/${comicId}`)
         .done((response)=>{
           console.log("comic retrieved %o", response.comic);
-          this.setState({ comic: response.comic });
-          })
+          this.setState({
+            comic: response.comic,
+            isFavorite: response.favorite
+          });
+        })
         .fail((response)=>{
           console.log("error getting comic %o", response.responseJSON);
           this.setState({ errorMessage: response.responseJSON.error });
@@ -63,6 +68,7 @@ export default class ComicPage extends React.Component{
 
         {this._displayErrorMessage()}
 
+        {this.state.comic && <FavoriteControl isFavorite={this.state.isFavorite} comicId={this.state.comic.id} />}
         {this.state.comic && <Comic comic={this.state.comic} />}
       </div>
     );

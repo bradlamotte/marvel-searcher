@@ -18,7 +18,7 @@ export default class FavoriteControl extends React.Component{
     if(this.props.characterId){
       endpoint = `/favorites?characterId=${this.props.characterId}`;
     } else if(this.props.comicId){
-      endpoint = `/favorites?comic=${this.props.comicId}`;
+      endpoint = `/favorites?comicId=${this.props.comicId}`;
     }
 
     if(this.state.isFavorite){
@@ -31,10 +31,11 @@ export default class FavoriteControl extends React.Component{
   _addFavorite(endpoint){
     $.post(endpoint)
       .done(result=>{
+        console.log("added favorite");
         this.setState({ isFavorite: true });
       })
       .fail(err=>{
-        console.log("error when adding favorite", err);
+        console.log("error when adding favorite %o", err.responseText);
       });
   }
 
@@ -43,6 +44,7 @@ export default class FavoriteControl extends React.Component{
       url: endpoint,
       type: 'DELETE',
       success: (result) => {
+        console.log("removed favorite");
         this.setState({ isFavorite: false });
       },
       fail: (err) => {
