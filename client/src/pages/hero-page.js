@@ -1,6 +1,7 @@
 import React from 'react';
 import CharacterSearchBox from '../components/character-search-box';
 import Character from '../components/character';
+import FavoriteControl from '../components/favorite-control';
 import { PageHeader } from 'react-bootstrap';
 import $ from 'jquery';
 
@@ -9,7 +10,8 @@ class HeroPage extends React.Component{
     super(props);
     this.state = {
       character: null,
-      errorMessage: ''
+      errorMessage: '',
+      isFavorite: false
     };
     this.onResultSelected = this.onResultSelected.bind(this);
   }
@@ -27,11 +29,14 @@ class HeroPage extends React.Component{
       $.getJSON(`/characters/${characterId}`)
         .done((response)=>{
           console.log("character retrieved", response.character);
-          this.setState({ character: response.character });
-          })
+          this.setState({
+            character: response.character,
+            isFavorite: response.favorite
+          });
+        })
         .fail((response)=>{
-          console.log("error getting character", response.responseJSON);
-          this.setState({ errorMessage: response.responseJSON.error });
+          console.log("error getting character", response);
+          this.setState({ errorMessage: response.responseText });
         });
     }
   }
@@ -63,6 +68,7 @@ class HeroPage extends React.Component{
 
         {this._displayErrorMessage()}
 
+        {this.state.character && <FavoriteControl isFavorite={this.state.isFavorite} characterId={this.state.character.id} />}
         {this.state.character && <Character character={this.state.character} />}
       </div>
     );
