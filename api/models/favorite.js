@@ -92,6 +92,7 @@ class Favorite{
           query = { characterId: characterId };
           project = {characterId: true, _id: false};
         } else if(comicId){
+          query = { comicId: comicId };
           project = {comicId: true, _id: false};
         }
 
