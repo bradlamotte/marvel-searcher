@@ -12,13 +12,9 @@ class Setup{
     DB.connect(done);
   }
 
-  static clear_db(){
+  static clear_db(done){
     const db = DB.get();
-    db.listCollections().forEach(
-      function(collection) {
-        db.collection(collection.name).remove()
-      }
-    );
+    db.collection("favorites").remove(done);
   }
 }
 

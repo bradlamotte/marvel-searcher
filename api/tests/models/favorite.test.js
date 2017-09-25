@@ -1,17 +1,17 @@
 const Setup = require('../setup');
 const Favorite = require('../../models/favorite');
-const MarvelDataMock = require('../mocks/marvel-data-mock');
+const Promise = require('promise');
 
 describe('models/favorite', function(){
   before(function(done) {
     Setup.db_connection(done);
   });
 
-  beforeEach(function() {
-    Setup.clear_db();
-  });
-
   describe('add', function(){
+
+    beforeEach(function(done) {
+      Setup.clear_db(done);
+    });
 
     describe('with non-integer characterId', function(){
       it('should be rejected with TypeError', function(done){
@@ -20,38 +20,68 @@ describe('models/favorite', function(){
       });
     });
 
-    describe('adding with non-integer comicId', function(){
+    describe('with non-integer comicId', function(){
       it('should be rejected with TypeError', function(done){
         const favorite = new Favorite({comidId: 'test'});
         favorite.add().should.be.rejectedWith(TypeError).notify(done);
       });
     });
 
-    describe('adding with no parameters', function(){
+    describe('with no parameters', function(){
       it('should be rejected with TypeError', function(done){
         const favorite = new Favorite();
         favorite.add().should.be.rejectedWith(TypeError).notify(done);
       });
     });
 
-    describe('adding with valid characterId and comicId', function(){
+    describe('with valid characterId and comicId', function(){
       it('should be rejected with TypeError', function(done){
         const favorite = new Favorite({characterId: 123, comicId: 123});
         favorite.add().should.be.rejectedWith(TypeError).notify(done);
       });
     });
 
-    describe('adding with valid characterId', function(){
-      it('should be fulfilled', function(done){
+    describe('with valid characterId', function(){
+      it('should be add a record to the db', function(done){
         const favorite = new Favorite({characterId: 123});
-        favorite.add().should.be.fulfilled.notify(done);
+        let initialCnt;
+
+        // get db count before add
+        Favorite.count().then(cnt=>{
+          initialCnt = cnt;
+        })
+        .then(favorite.add.bind(favorite)) // add new favorite
+        .then(Favorite.count) // get db count after add
+        .then(finalCnt => {
+          // db count should have been incremented by 1
+          finalCnt.should.equal(initialCnt + 1);
+          done();
+        })
+        .catch(err => {
+          done(err);
+        });
       });
     });
 
-    describe('adding with valid comicId', function(){
+    describe('with valid comicId', function(){
       it('should be fulfilled', function(done){
         const favorite = new Favorite({comicId: 123});
-        favorite.add().should.be.fulfilled.notify(done);
+        let initialCnt;
+
+        // get db count before add
+        Favorite.count().then(cnt=>{
+          initialCnt = cnt;
+        })
+        .then(favorite.add.bind(favorite)) // add new favorite
+        .then(Favorite.count) // get db count after add
+        .then(finalCnt => {
+          // db count should have been incremented by 1
+          finalCnt.should.equal(initialCnt + 1);
+          done();
+        })
+        .catch(err => {
+          done(err);
+        });
       });
     });
   });

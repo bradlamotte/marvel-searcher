@@ -15,7 +15,7 @@ class Favorite{
   // Returns the total number of favorites in the database
   // Class method
   // Returns a Promise
-  static count(callback){
+  static count(){
     return new Promise((resolve, reject)=>{
       db.favorites().find().count((err, cnt)=>{
         if(err){
@@ -29,6 +29,7 @@ class Favorite{
 
   // Creates a new favorite in the database.
   // Validates model attributes before inserting.
+  // Class method
   // Returns a Promise
   add(){
     return new Promise((resolve, reject)=>{
@@ -41,7 +42,7 @@ class Favorite{
             if(err){
               reject(err)
             } else {
-              resolve();
+              resolve(this);
             }
           }
         );
