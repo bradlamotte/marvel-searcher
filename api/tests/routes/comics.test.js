@@ -105,21 +105,34 @@ describe('routes/comics', function(){
           .end(done);
       });
 
-      it('should respond with a correct favorite data', function(done){
-        const favorite = new Favorite({comicId: 123});
+      describe('when comic is a favorite', function(){
+        it('should respond with favorite: true', function(done){
+          const favorite = new Favorite({comicId: 123});
 
-        // insert new favorite
-        favorite.add()
-          .then(result => {
-            request(app)
-              .get('/comics/123')
-              // make request to find a comic
-              .expect((res)=>{
-                res.body.favorite.should.deep.equal({comicId: 123});
-              })
+          // insert new favorite
+          favorite.add()
+            .then(result => {
+              request(app)
+                .get('/comics/123')
+                // make request to find a comic
+                .expect((res)=>{
+                  res.body.favorite.should.be.true;
+                })
+              .end(done);
+            })
+            .catch(done);
+        });
+      });
+
+      describe('when comic is not a favorite', function(){
+        it('should respond with favorite: false', function(done){
+          request(app)
+            .get('/comics/123')
+            .expect((res)=>{
+              res.body.favorite.should.be.false;
+            })
             .end(done);
-          })
-          .catch(done);
+        });
       });
     });
   });

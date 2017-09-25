@@ -106,19 +106,30 @@ describe('routes/characters', function(){
           .end(done);
       });
 
-      it('should respond with a correct favorite data', function(done){
-        const favorite = new Favorite({characterId: 123});
+      describe('when character is a favorite', function(){
+        it('should respond with favorite: true', function(done){
+          const favorite = new Favorite({characterId: 123});
 
-        // add a new favorite
-        favorite.add()
-          .then(result => {
-            // make request to find a character
-            req.expect((res)=>{
-              res.body.favorite.should.deep.equal({characterId: 123});
+          // add a new favorite
+          favorite.add()
+            .then(result => {
+              // make request to find a character
+              req.expect((res)=>{
+                res.body.favorite.should.be.true;
+              })
+              .end(done);
             })
-            .end(done);
+            .catch(done);
+        });
+      });
+
+      describe('when character is not a favorite', function(){
+        it('should respond with favorite: false', function(done){
+          req.expect((res)=>{
+            res.body.favorite.should.be.false;
           })
-          .catch(done);
+          .end(done);
+        });
       });
     });
 
