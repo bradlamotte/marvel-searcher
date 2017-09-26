@@ -19,6 +19,7 @@ const handleProcessingError = (response, err) => {
 // Add a favorite for either character or comic
 // Expects either characterId or comicId parameter
 router.post('/',
+  check('name'),    
   check('test')
     .custom((value, { req }) => {
       const characterId = parseInt(req.query.characterId);

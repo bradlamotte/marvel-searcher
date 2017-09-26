@@ -8,7 +8,8 @@ class Favorite{
   constructor(params = {}){
     Object.assign(this, {
       characterId: parseInt(params.characterId),
-      comicId: parseInt(params.comicId)
+      comicId: parseInt(params.comicId),
+      name: params.name
     });
   }
 
@@ -36,6 +37,10 @@ class Favorite{
       try{
         this.validate();
 
+        if(!this.name){
+          throw new TypeError('Name is required');
+        }
+
         db.favorites().insertOne(
           this._toInsertJSON(),
           (err, result)=>{
@@ -57,6 +62,7 @@ class Favorite{
     return {
       characterId: this.characterId,
       comicId: this.comicId,
+      name: this.name,
       dateAdded: new Date()
     }
   }

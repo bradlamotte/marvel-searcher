@@ -34,6 +34,13 @@ describe('models/favorite', function(){
       });
     });
 
+    describe('with valid characterId but no name', function(){
+      it('should be rejected with TypeError', function(done){
+        const favorite = new Favorite({characterId: 123});
+        favorite.add().should.be.rejectedWith(TypeError).notify(done);
+      });
+    });
+
     describe('with valid characterId and comicId', function(){
       it('should be rejected with TypeError', function(done){
         const favorite = new Favorite({characterId: 123, comicId: 123});
@@ -41,9 +48,9 @@ describe('models/favorite', function(){
       });
     });
 
-    describe('with valid characterId', function(){
-      it('should be add a record to the db', function(done){
-        const favorite = new Favorite({characterId: 123});
+    describe('with valid characterId and name', function(){
+      it('should add a record to the db', function(done){
+        const favorite = new Favorite({characterId: 123, name: 'test'});
         let initialCnt;
 
         // get db count before add
@@ -61,9 +68,9 @@ describe('models/favorite', function(){
       });
     });
 
-    describe('with valid comicId', function(){
-      it('should be fulfilled', function(done){
-        const favorite = new Favorite({comicId: 123});
+    describe('with valid comicId and name', function(){
+      it('should add a record to the db', function(done){
+        const favorite = new Favorite({comicId: 123, name: 'test'});
         let initialCnt;
 
         // get db count before add
@@ -104,7 +111,7 @@ describe('models/favorite', function(){
 
     describe('with valid characterId', function(){
       it('should return correct favorite from db', function(done){
-        const favorite = new Favorite({characterId: 123});
+        const favorite = new Favorite({characterId: 123, name: 'test'});
 
         favorite.add()
           .then(() => {
@@ -120,7 +127,7 @@ describe('models/favorite', function(){
 
     describe('with valid comicId', function(){
       it('should return correct favorite from db', function(done){
-        const favorite = new Favorite({comicId: 123});
+        const favorite = new Favorite({comicId: 123, name: 'test'});
 
         favorite.add()
           .then(() => {
@@ -140,25 +147,28 @@ describe('models/favorite', function(){
 
     describe('with non-integer characterId', function(){
       it('should be rejected with TypeError', function(done){
-        Favorite.get({characterId: 'test'}).should.be.rejectedWith(TypeError, 'valid characterId or comicId').notify(done);
+        const favorite = new Favorite({characterId: 'test'});
+        favorite.remove().should.be.rejectedWith(TypeError, 'valid characterId or comicId').notify(done);
       });
     });
 
     describe('with non-integer comicId', function(){
       it('should be rejected with TypeError', function(done){
-        Favorite.get({comicId: 'test'}).should.be.rejectedWith(TypeError, 'valid characterId or comicId').notify(done);
+        const favorite = new Favorite({comicId: 'test'});
+        favorite.remove().should.be.rejectedWith(TypeError, 'valid characterId or comicId').notify(done);
       });
     });
 
     describe('with characterId and comicId', function(){
       it('should be rejected with TypeError', function(done){
-        Favorite.get({characterId: 123, comicId: 123}).should.be.rejectedWith(TypeError, 'cannot both be passed').notify(done);
+        const favorite = new Favorite({characterId: 123, comicId: 123});
+        favorite.remove().should.be.rejectedWith(TypeError, 'cannot both be set').notify(done);
       });
     });
 
     describe('with characterId not in db', function(){
       it('should not delete anything from db', function(done){
-        const favorite = new Favorite({characterId: 123});
+        const favorite = new Favorite({characterId: 123, name: 'test'});
         let initialCnt;
 
         // get count of favorites before any action
@@ -178,7 +188,7 @@ describe('models/favorite', function(){
 
     describe('with characterId in db', function(){
       it('should delete 1 record from db', function(done){
-        const favorite = new Favorite({characterId: 123});
+        const favorite = new Favorite({characterId: 123, name: 'test'});
         let initialCnt;
 
         favorite.add()
@@ -199,7 +209,7 @@ describe('models/favorite', function(){
 
     describe('with comicId not in db', function(){
       it('should not delete anything from db', function(done){
-        const favorite = new Favorite({comicId: 123});
+        const favorite = new Favorite({comicId: 123, name: 'test'});
         let initialCnt;
 
         // get count of favorites before any action
@@ -219,7 +229,7 @@ describe('models/favorite', function(){
 
     describe('with comicId in db', function(){
       it('should delete 1 record from db', function(done){
-        const favorite = new Favorite({comicId: 123});
+        const favorite = new Favorite({comicId: 123, name: 'test'});
         let initialCnt;
 
         favorite.add()

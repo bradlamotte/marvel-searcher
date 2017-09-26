@@ -26,7 +26,7 @@ describe('routes/favorites', function(){
       it('should respond with 422 status', function(done){
         request(app)
           .post('/favorites')
-          .query({characterId: 123, comicId: 456})
+          .query({characterId: 123, comicId: 456, name: 'test'})
           .expect(422, done);
       });
     });
@@ -35,7 +35,7 @@ describe('routes/favorites', function(){
       it('should respond with 422 status', function(done){
         request(app)
           .post('/favorites')
-          .query({characterId: 'test'})
+          .query({characterId: 'test', name: 'test'})
           .expect(422, done);
       });
     });
@@ -44,24 +44,42 @@ describe('routes/favorites', function(){
       it('should respond with 422 status', function(done){
         request(app)
           .post('/favorites')
-          .query({comicId: 'test'})
+          .query({comicId: 'test', name: 'test'})
           .expect(422, done);
       });
     });
 
-    describe('with valid characterId', function(){
-      it('should respond with valid content type and status', function(done){
+    describe('with valid characterId but no name', function(){
+      it('should respond with 422 status', function(done){
         request(app)
           .post('/favorites')
           .query({characterId: 123})
+          .expect(422, done);
+      });
+    });
+
+    describe('with valid comicId but no name', function(){
+      it('should respond with 422 status', function(done){
+        request(app)
+          .post('/favorites')
+          .query({comicId: 123})
+          .expect(422, done);
+      });
+    });
+
+    describe('with valid characterId and name', function(){
+      it('should respond with valid content type and status', function(done){
+        request(app)
+          .post('/favorites')
+          .query({characterId: 123, name: 'test'})
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
 
-      it('should respond with an object containing favorite', function(done){
+      it('should respond with a favorite property', function(done){
         request(app)
           .post('/favorites')
-          .query({characterId: 123})
+          .query({characterId: 123, name: 'test'})
           .expect((res)=>{
             res.body.should.have.property('favorite');
           })
@@ -69,19 +87,19 @@ describe('routes/favorites', function(){
       });
     });
 
-    describe('with valid comicId', function(){
+    describe('with valid comicId and name', function(){
       it('should respond with valid content type and status', function(done){
         request(app)
           .post('/favorites')
-          .query({comicId: 123})
+          .query({comicId: 123, name: 'test'})
           .expect('Content-Type', /json/)
           .expect(200, done);
       });
 
-      it('should respond with an object containing favorite', function(done){
+      it('should respond with a favorite property', function(done){
         request(app)
           .post('/favorites')
-          .query({comicId: 123})
+          .query({comicId: 123, name: 'test'})
           .expect((res)=>{
             res.body.should.have.property('favorite');
           })

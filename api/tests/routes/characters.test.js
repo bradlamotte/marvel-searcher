@@ -108,7 +108,7 @@ describe('routes/characters', function(){
 
       describe('when character is a favorite', function(){
         it('should respond with favorite: true', function(done){
-          const favorite = new Favorite({characterId: 123});
+          const favorite = new Favorite({characterId: 123, name: 'test'});
 
           // add a new favorite
           favorite.add()

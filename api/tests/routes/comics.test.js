@@ -107,7 +107,7 @@ describe('routes/comics', function(){
 
       describe('when comic is a favorite', function(){
         it('should respond with favorite: true', function(done){
-          const favorite = new Favorite({comicId: 123});
+          const favorite = new Favorite({comicId: 123, name: 'test'});
 
           // insert new favorite
           favorite.add()
