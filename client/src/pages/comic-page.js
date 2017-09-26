@@ -68,7 +68,7 @@ export default class ComicPage extends React.Component{
 
         {this._displayErrorMessage()}
 
-        {this.state.comic && <FavoriteControl isFavorite={this.state.isFavorite} comicId={this.state.comic.id} />}
+        {this.state.comic && <FavoriteControl isFavorite={this.state.isFavorite} comicId={this.state.comic.id} name={this.state.comic.title} />}
         {this.state.comic && <Comic comic={this.state.comic} />}
       </div>
     );

@@ -11,14 +11,18 @@ export default class FavoriteControl extends React.Component{
     this._changeStatus = this._changeStatus.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isFavorite: nextProps.isFavorite });
+  }
+
   _changeStatus(e){
     e.preventDefault();
     let endpoint;
 
     if(this.props.characterId){
-      endpoint = `/favorites?characterId=${this.props.characterId}`;
+      endpoint = `/favorites?characterId=${this.props.characterId}&name=${this.props.name}`;
     } else if(this.props.comicId){
-      endpoint = `/favorites?comicId=${this.props.comicId}`;
+      endpoint = `/favorites?comicId=${this.props.comicId}&name=${this.props.name}`;
     }
 
     if(this.state.isFavorite){
@@ -66,7 +70,8 @@ export default class FavoriteControl extends React.Component{
 }
 
 FavoriteControl.propTypes = {
-  isFavorite: PropTypes.bool,
+  isFavorite: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
   characterId: PropTypes.number,
   comicId: PropTypes.number
 };

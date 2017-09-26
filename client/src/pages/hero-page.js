@@ -68,7 +68,7 @@ class HeroPage extends React.Component{
 
         {this._displayErrorMessage()}
 
-        {this.state.character && <FavoriteControl isFavorite={this.state.isFavorite} characterId={this.state.character.id} />}
+        {this.state.character && <FavoriteControl isFavorite={this.state.isFavorite} characterId={this.state.character.id} name={this.state.character.name} />}
         {this.state.character && <Character character={this.state.character} />}
       </div>
     );
