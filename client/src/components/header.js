@@ -37,6 +37,9 @@ export default class Header extends React.Component{
             <LinkContainer to="/comics">
               <NavItem eventKey={2} onSelect={this.handleNavSelect}>Comics</NavItem>
             </LinkContainer>
+            <LinkContainer to="/favorites">
+              <NavItem eventKey={3} onSelect={this.handleNavSelect}>Favorites</NavItem>
+            </LinkContainer>
           </Nav>
           <Nav pullRight className="tagline">
             Find all your favorite Marvel stuff here

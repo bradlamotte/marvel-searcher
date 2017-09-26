@@ -4,6 +4,7 @@ import Comic from '../components/comic';
 import { PageHeader } from 'react-bootstrap';
 import $ from 'jquery';
 import FavoriteControl from '../components/favorite-control';
+import '../style/comic-page.css';
 
 export default class ComicPage extends React.Component{
   constructor(props) {
@@ -68,7 +69,12 @@ export default class ComicPage extends React.Component{
 
         {this._displayErrorMessage()}
 
-        {this.state.comic && <FavoriteControl isFavorite={this.state.isFavorite} comicId={this.state.comic.id} name={this.state.comic.title} />}
+        {this.state.comic &&
+          <div className="favorite-control-wrapper">
+            <FavoriteControl isFavorite={this.state.isFavorite} comicId={this.state.comic.id} name={this.state.comic.title} />
+          </div>
+        }
+
         {this.state.comic && <Comic comic={this.state.comic} />}
       </div>
     );

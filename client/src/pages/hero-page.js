@@ -4,6 +4,7 @@ import Character from '../components/character';
 import FavoriteControl from '../components/favorite-control';
 import { PageHeader } from 'react-bootstrap';
 import $ from 'jquery';
+import '../style/hero-page.css';
 
 class HeroPage extends React.Component{
   constructor(props) {
@@ -68,7 +69,12 @@ class HeroPage extends React.Component{
 
         {this._displayErrorMessage()}
 
-        {this.state.character && <FavoriteControl isFavorite={this.state.isFavorite} characterId={this.state.character.id} name={this.state.character.name} />}
+        {this.state.character &&
+          <div className="favorite-control-wrapper">
+            <FavoriteControl isFavorite={this.state.isFavorite} characterId={this.state.character.id} name={this.state.character.name} />
+          </div>
+        }
+
         {this.state.character && <Character character={this.state.character} />}
       </div>
     );

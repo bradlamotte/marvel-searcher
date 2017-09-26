@@ -50,6 +50,9 @@ export default class FavoriteControl extends React.Component{
       success: (result) => {
         console.log("removed favorite");
         this.setState({ isFavorite: false });
+        if(this.props.onRemoved){
+          this.props.onRemoved({characterId: this.props.characterId, comicId: this.props.comicId});
+        }
       },
       fail: (err) => {
         console.log("error when removing favorite", err);
@@ -62,7 +65,9 @@ export default class FavoriteControl extends React.Component{
       <div className={`favorite-control ${this.state.isFavorite ? 'is-favorite' : ''}`}>
         <a href onClick={this._changeStatus}>
           <Glyphicon glyph={this.state.isFavorite ? 'heart' : 'heart-empty'}></Glyphicon>
-          { this.state.isFavorite ? 'One of your favorites!' : 'Add to your favorites!' }
+          <span>
+            { this.state.isFavorite ? 'One of your favorites!' : 'Add to your favorites!' }
+          </span>
         </a>
       </div>
     );
@@ -73,5 +78,6 @@ FavoriteControl.propTypes = {
   isFavorite: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   characterId: PropTypes.number,
-  comicId: PropTypes.number
+  comicId: PropTypes.number,
+  onRemoved: PropTypes.func
 };
