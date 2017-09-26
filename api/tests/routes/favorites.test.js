@@ -1,6 +1,7 @@
 const Setup = require('../setup');
 const request = require('supertest');
 const app = require('../../app');
+const Favorite = require('../../models/favorite');
 
 describe('routes/favorites', function(){
 
@@ -10,6 +11,27 @@ describe('routes/favorites', function(){
 
   beforeEach(function(done) {
     Setup.clear_db(done);
+  });
+
+  describe('getting', function(){
+
+    it('should respond with array under the favorites property', function(done){
+      const favoriteA = new Favorite({comicId: 123, name: 'A test'});
+      const favoriteB = new Favorite({characterId: 456, name: 'B test'});
+      let initialCnt;
+
+      favoriteA.add()
+        .then(favoriteB.add.bind(favoriteB))
+        .then(() => {
+          request(app)
+            .get('/favorites')
+            .expect(200)
+            .expect((res)=>{
+              res.body.favorites.should.be.an('array').and.have.lengthOf(2);
+            })
+            .end(done);
+        });
+    });
   });
 
   describe('adding', function(){

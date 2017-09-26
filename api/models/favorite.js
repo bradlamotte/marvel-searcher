@@ -79,6 +79,7 @@ class Favorite{
   // Class method
   // Queries db for favorites
   // Accepts a parms object containing either characterId or comicId
+  // Returns a single favorite
   // Returns a Promise
   static get(params = {}){
     return new Promise((resolve, reject)=>{
@@ -112,7 +113,25 @@ class Favorite{
         });
       }
     });
+  }
 
+  // Class method
+  // Queries db for favorites
+  // Returns a an array of favorites
+  // Returns a Promise
+  static getAll(params = {}){
+    return new Promise((resolve, reject)=>{
+      db.favorites()
+        .find({}, {_id: false})
+        .sort({name: 1})
+        .toArray((err, results) => {
+          if(err){
+            reject(err);
+          } else {
+            resolve(results);
+          }
+      });
+    });
   }
 
   // Removes a favorite from the database.

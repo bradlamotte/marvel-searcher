@@ -19,7 +19,7 @@ const handleProcessingError = (response, err) => {
 // Add a favorite for either character or comic
 // Expects either characterId or comicId parameter
 router.post('/',
-  check('name'),    
+  check('name'),
   check('test')
     .custom((value, { req }) => {
       const characterId = parseInt(req.query.characterId);
@@ -44,9 +44,19 @@ router.post('/',
       .catch(err => {
         handleProcessingError(res, err);
       });
-
   }
 );
+
+// Get all favorites
+router.get('/', (req, res) => {
+  Favorite.getAll()
+    .then(favorites => {
+      res.json({favorites: favorites});
+    })
+    .catch(err => {
+      handleProcessingError(res, err);
+    });
+});
 
 // Remove a favorite for either character or comic
 // Expects either characterId or comicId parameter

@@ -143,6 +143,27 @@ describe('models/favorite', function(){
 
   });
 
+  describe('getAll', function(){
+
+    it('should return an array of favorites in the correct order', function(done){
+      const favoriteA = new Favorite({comicId: 123, name: 'A test'});
+      const favoriteB = new Favorite({characterId: 456, name: 'B test'});
+      let initialCnt;
+
+      favoriteA.add()
+        .then(favoriteB.add.bind(favoriteB))
+        .then(Favorite.getAll)
+        .then(favorites => {
+          favorites.should.be.an('array').and.have.lengthOf(2);
+          favorites[0].name.should.equal(favoriteA.name);
+          favorites[1].name.should.equal(favoriteB.name);
+          done();
+        })
+        .catch(done);
+    });
+
+  });
+
   describe('remove', function(){
 
     describe('with non-integer characterId', function(){
