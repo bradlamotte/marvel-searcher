@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { shallow } from 'enzyme';
-import MarvelImage from './marvel-image';
+import { shallow, mount } from 'enzyme';
+import MarvelImage from '../components/marvel-image';
 
 const IMAGE_DATA = {
   path: 'http://test.com',
@@ -34,4 +34,18 @@ it('uses default style when no style passed in', () => {
 it('uses custom style passed in', () => {
   const image = shallow(<MarvelImage imageData={IMAGE_DATA} imageStyle="standard_small" />);
   expect(image.instance()._url()).toBe(_imageFormat(IMAGE_DATA, 'standard_small'));
+});
+
+describe('with no image data passed in', function(){
+  it('does not render an img', () => {
+    const image = mount(<MarvelImage />);
+    expect(image.find('img').length).toBe(0);
+  });
+});
+
+describe('with valid image data passed in', function(){
+  it('does render an img', () => {
+    const image = mount(<MarvelImage imageData={IMAGE_DATA} />);
+    expect(image.find('img').length).toBe(1);
+  });
 });
