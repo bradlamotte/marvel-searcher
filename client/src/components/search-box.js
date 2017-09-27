@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import $ from 'jquery';
 import { FormGroup } from 'react-bootstrap';
 import '../style/search-box.css';
 
@@ -23,13 +22,9 @@ export default class SearchBox extends React.Component{
 
   _onSuggestionsFetchRequested = ({ value }) => {
     this.props.onResultSelected(null);
-    const searchUrl = `${this.props.searchPath}?search_term=${value}`;
-
-    $.getJSON(searchUrl, (response) => {
-      this.setState({ suggestions: response.results });
+    this.props.getSuggestions(value).then(suggestions => {
+      this.setState({ suggestions: suggestions });
     });
-
-    return [];
   };
 
   _shouldRenderSuggestions = value => {
@@ -83,7 +78,8 @@ export default class SearchBox extends React.Component{
 SearchBox.propTypes = {
   onResultSelected: PropTypes.func.isRequired,
   renderSuggestion: PropTypes.func.isRequired,
-  getSuggestionValue: PropTypes.func.isRequired
+  getSuggestionValue: PropTypes.func.isRequired,
+  getSuggestions: PropTypes.func.isRequired
 };
 
 SearchBox.defaultProps = {
