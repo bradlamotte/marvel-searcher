@@ -1,7 +1,7 @@
 import React from 'react';
 import FavoriteControl from '../components/favorite-control';
 import { PageHeader, Table } from 'react-bootstrap';
-import $ from 'jquery';
+import MarvelData from '../data/marvel-data';
 import { Link } from 'react-router-dom';
 import '../style/favorite-page.css';
 
@@ -16,12 +16,12 @@ class FavoritePage extends React.Component{
   }
 
   componentDidMount() {
-    $.getJSON('/favorites')
-      .done((response)=>{
-        console.log("favorites retrieved", response.favorites);
-        this.setState({ favorites: response.favorites });
+    MarvelData.get_favorites()
+      .then((favorites)=>{
+        console.log("favorites retrieved", favorites);
+        this.setState({ favorites: favorites });
       })
-      .fail((response)=>{
+      .catch((response)=>{
         console.log("error getting favorites", response);
         this.setState({ errorMessage: response.responseText });
       });
@@ -55,7 +55,6 @@ class FavoritePage extends React.Component{
       return false;
     });
 
-    console.log("toDelete", toDeleteIndex);
     const newFavorites = this.state.favorites.slice(); //copy array
     newFavorites.splice(toDeleteIndex, 1); //remove element
     this.setState({ favorites: newFavorites }); //update state

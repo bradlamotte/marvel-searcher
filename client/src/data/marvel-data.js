@@ -72,4 +72,16 @@ export default class MarvelData {
     })
   }
 
+  static get_favorites() {
+    return new Promise((resolve, reject) => {
+      $.getJSON('/favorites')
+        .then(response => {
+          resolve(response.favorites);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    })
+  }
+
 }

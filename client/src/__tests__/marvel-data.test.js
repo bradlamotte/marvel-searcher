@@ -118,4 +118,16 @@ describe('MarvelData', function(){
     });
 
   });
+
+  describe('get favorites', () => {
+
+    it('should return an array', () => {
+      jest.mock('jquery');
+      const favoritesReponse = [{one: 'two', three: 'four'}];
+      $.setResponse({favorites: favoritesReponse});
+      expect.assertions(1);
+      expect(MarvelData.get_favorites()).resolves.toEqual(favoritesReponse);
+    });
+
+  });
 });
