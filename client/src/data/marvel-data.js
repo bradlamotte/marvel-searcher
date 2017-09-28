@@ -2,31 +2,39 @@ import $ from 'jquery';
 
 export default class MarvelData {
 
-  static character_search(search_term) {
+  static character_search(search_term = '') {
     return new Promise((resolve, reject)=>{
-      const searchUrl = `/characters/?search_term=${search_term}`;
+      if(search_term.length >= 3){
+        const searchUrl = `/characters/?search_term=${search_term}`;
 
-      $.getJSON(searchUrl)
-        .done((response) => {
-          resolve(response.results);
-        })
-        .fail((err)=>{
-          reject(err);
-        })
+        $.getJSON(searchUrl)
+          .then((response) => {
+            resolve(response.results);
+          })
+          .catch((err)=>{
+            reject(err);
+          });
+      } else {
+        reject(new TypeError('Search term must be at least 3 characters'));
+      }
     });
   }
 
   static comic_search(search_term) {
     return new Promise((resolve, reject)=>{
-      const searchUrl = `/comics/?search_term=${search_term}`;
+      if(search_term.length >= 3){
+        const searchUrl = `/comics/?search_term=${search_term}`;
 
-      $.getJSON(searchUrl)
-        .done((response) => {
-          resolve(response.results);
-        })
-        .fail((err)=>{
-          reject(err);
-        })
+        $.getJSON(searchUrl)
+          .then((response) => {
+            resolve(response.results);
+          })
+          .catch((err)=>{
+            reject(err);
+          })
+      } else {
+        reject(new TypeError('Search term must be at least 3 characters'));
+      }
     });
   }
 
