@@ -3,8 +3,8 @@ import CharacterSearchBox from '../components/character-search-box';
 import Character from '../components/character';
 import FavoriteControl from '../components/favorite-control';
 import { PageHeader } from 'react-bootstrap';
-import $ from 'jquery';
 import '../style/hero-page.css';
+import MarvelData from '../data/marvel-data';
 
 class HeroPage extends React.Component{
   constructor(props) {
@@ -27,15 +27,16 @@ class HeroPage extends React.Component{
 
   _getCharacter(characterId){
     if(characterId){
-      $.getJSON(`/characters/${characterId}`)
-        .done((response)=>{
-          console.log("character retrieved", response.character);
+
+      MarvelData.get_character(characterId)
+        .then(response=>{
+          console.log("character retrieved", response);
           this.setState({
             character: response.character,
             isFavorite: response.favorite
           });
         })
-        .fail((response)=>{
+        .catch((response)=>{
           console.log("error getting character", response);
           this.setState({ errorMessage: response.responseText });
         });
