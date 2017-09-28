@@ -55,4 +55,21 @@ export default class MarvelData {
     });
   }
 
+  static get_comic(comicId) {
+    return new Promise((resolve, reject) => {
+      if(parseInt(comicId, 10) > 0){
+
+        $.getJSON(`/comics/${comicId}`)
+          .then(response => {
+            resolve(response);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      } else {
+        reject(new TypeError('ComicId must be an integer'));
+      }
+    })
+  }
+
 }

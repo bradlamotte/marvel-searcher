@@ -2,7 +2,7 @@ import React from 'react';
 import ComicSearchBox from '../components/comic-search-box';
 import Comic from '../components/comic';
 import { PageHeader } from 'react-bootstrap';
-import $ from 'jquery';
+import MarvelData from '../data/marvel-data';
 import FavoriteControl from '../components/favorite-control';
 import '../style/comic-page.css';
 
@@ -27,15 +27,15 @@ export default class ComicPage extends React.Component{
 
   _getComic(comicId){
     if(comicId){
-      $.getJSON(`/comics/${comicId}`)
-        .done((response)=>{
+      MarvelData.get_comic(comicId)
+        .then((response)=>{
           console.log("comic retrieved %o", response.comic);
           this.setState({
             comic: response.comic,
             isFavorite: response.favorite
           });
         })
-        .fail((response)=>{
+        .catch((response)=>{
           console.log("error getting comic %o", response.responseJSON);
           this.setState({ errorMessage: response.responseJSON.error });
         });

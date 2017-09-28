@@ -90,4 +90,32 @@ describe('MarvelData', function(){
     });
 
   });
+
+  describe('get comic', () => {
+
+    describe('with empty comicId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        expect(MarvelData.get_comic()).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with non-integer comicId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        expect(MarvelData.get_comic('test')).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with valid comicId', () => {
+      it('should return an object', () => {
+        jest.mock('jquery');
+        const comicReponse = {favorite: true, comic: {one: 'two'}};
+        $.setResponse(comicReponse);
+        expect.assertions(1);
+        expect(MarvelData.get_comic(123)).resolves.toEqual(comicReponse);
+      });
+    });
+
+  });
 });
