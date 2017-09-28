@@ -84,4 +84,61 @@ export default class MarvelData {
     })
   }
 
+  static _favoriteEndpoint(favoriteData = {}){
+    if(favoriteData.characterId){
+      return `/favorites?characterId=${favoriteData.characterId}&name=${favoriteData.name}`;
+    } else if(favoriteData.comicId){
+      return `/favorites?comicId=${favoriteData.comicId}&name=${favoriteData.name}`;
+    }
+  }
+
+  static add_favorite(favoriteData = {}) {
+    return new Promise((resolve, reject) => {
+
+      const characterId = parseInt(favoriteData.characterId, 10);
+      const comicId = parseInt(favoriteData.comicId, 10);
+
+      if(!characterId && !comicId){
+        reject(new TypeError('CharacterId or ComicId must be set'));
+      } else if(characterId && comicId){
+        reject(new TypeError('CharacterId and ComicId cannot both be set'))
+      } else if(!favoriteData.name){
+        reject(new TypeError('Name is required'));
+      }
+
+      $.post(this._favoriteEndpoint(favoriteData))
+        .then(response => {
+          resolve(response.favorite);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  static remove_favorite(favoriteData = {}) {
+    return new Promise((resolve, reject) => {
+
+      const characterId = parseInt(favoriteData.characterId, 10);
+      const comicId = parseInt(favoriteData.comicId, 10);
+
+      if(!characterId && !comicId){
+        reject(new TypeError('CharacterId or ComicId must be set'));
+      } else if(characterId && comicId){
+        reject(new TypeError('CharacterId and ComicId cannot both be set'))
+      }
+
+      $.ajax({
+        url: this._favoriteEndpoint(favoriteData),
+        type: 'DELETE'
+        })
+        .then(response => {
+          resolve(response.favorite);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
 }

@@ -8,14 +8,14 @@ describe('MarvelData', function(){
     describe('with empty search term', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        expect(MarvelData.character_search()).rejects.toBeInstanceOf(TypeError);
+        return expect(MarvelData.character_search()).rejects.toBeInstanceOf(TypeError);
       });
     });
 
     describe('with 2 character search term', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        expect(MarvelData.character_search('te')).rejects.toBeInstanceOf(TypeError);
+        return expect(MarvelData.character_search('te')).rejects.toBeInstanceOf(TypeError);
       });
     });
 
@@ -36,14 +36,14 @@ describe('MarvelData', function(){
     describe('with empty characterId', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        expect(MarvelData.get_character()).rejects.toBeInstanceOf(TypeError);
+        return expect(MarvelData.get_character()).rejects.toBeInstanceOf(TypeError);
       });
     });
 
     describe('with non-integer characterId', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        expect(MarvelData.get_character('test')).rejects.toBeInstanceOf(TypeError);
+        return expect(MarvelData.get_character('test')).rejects.toBeInstanceOf(TypeError);
       });
     });
 
@@ -53,7 +53,7 @@ describe('MarvelData', function(){
         const characterResponse = {favorite: true, character: {one: 'two'}};
         $.setResponse(characterResponse);
         expect.assertions(1);
-        expect(MarvelData.get_character(123)).resolves.toEqual(characterResponse);
+        return expect(MarvelData.get_character(123)).resolves.toEqual(characterResponse);
       });
     });
 
@@ -64,18 +64,14 @@ describe('MarvelData', function(){
     describe('with empty search term', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        return MarvelData.comic_search().catch(err => {
-          expect(err).toBeInstanceOf(TypeError);
-        });
+        return expect(MarvelData.comic_search()).rejects.toBeInstanceOf(TypeError);
       });
     });
 
     describe('with 2 character search term', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        return MarvelData.comic_search('te').catch(err => {
-          expect(err).toBeInstanceOf(TypeError);
-        });
+        return expect(MarvelData.comic_search('te')).rejects.toBeInstanceOf(TypeError);
       });
     });
 
@@ -85,7 +81,7 @@ describe('MarvelData', function(){
         const responseComics = [{one: 'two'}, {three: 'four'}];
         $.setResponse({results: responseComics});
         expect.assertions(1);
-        expect(MarvelData.comic_search('test')).resolves.toEqual(responseComics);
+        return expect(MarvelData.comic_search('test')).resolves.toEqual(responseComics);
       });
     });
 
@@ -96,14 +92,14 @@ describe('MarvelData', function(){
     describe('with empty comicId', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        expect(MarvelData.get_comic()).rejects.toBeInstanceOf(TypeError);
+        return expect(MarvelData.get_comic()).rejects.toBeInstanceOf(TypeError);
       });
     });
 
     describe('with non-integer comicId', () => {
       it('should be rejected with TypeError', () => {
         expect.assertions(1);
-        expect(MarvelData.get_comic('test')).rejects.toBeInstanceOf(TypeError);
+        return expect(MarvelData.get_comic('test')).rejects.toBeInstanceOf(TypeError);
       });
     });
 
@@ -113,7 +109,7 @@ describe('MarvelData', function(){
         const comicReponse = {favorite: true, comic: {one: 'two'}};
         $.setResponse(comicReponse);
         expect.assertions(1);
-        expect(MarvelData.get_comic(123)).resolves.toEqual(comicReponse);
+        return expect(MarvelData.get_comic(123)).resolves.toEqual(comicReponse);
       });
     });
 
@@ -126,7 +122,104 @@ describe('MarvelData', function(){
       const favoritesReponse = [{one: 'two', three: 'four'}];
       $.setResponse({favorites: favoritesReponse});
       expect.assertions(1);
-      expect(MarvelData.get_favorites()).resolves.toEqual(favoritesReponse);
+      return expect(MarvelData.get_favorites()).resolves.toEqual(favoritesReponse);
+    });
+
+  });
+
+  describe('add favorite', () => {
+
+    describe('with missing characterId and comicId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.add_favorite({name: 'test'})).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with missing name', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.add_favorite({characterId: 123, comicId: 456})).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with non-integer characterId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.add_favorite({characterId: 'test', name: 'test'})).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with non-integer comicId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.add_favorite({comicId: 'test', name: 'test'})).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with valid characterId', () => {
+      it('should return an object', () => {
+        jest.mock('jquery');
+        const favoriteReponse = {one: 'two'};
+        $.setResponse({favorite: favoriteReponse});
+        expect.assertions(1);
+        return expect(MarvelData.add_favorite({characterId: 123, name: 'test'})).resolves.toEqual(favoriteReponse);
+      });
+    });
+
+    describe('with valid comicId', () => {
+      it('should return an object', () => {
+        jest.mock('jquery');
+        const favoriteReponse = {one: 'two'};
+        $.setResponse({favorite: favoriteReponse});
+        expect.assertions(1);
+        return expect(MarvelData.add_favorite({comicId: 123, name: 'test'})).resolves.toEqual(favoriteReponse);
+      });
+    });
+
+  });
+
+  describe('remove favorite', () => {
+
+    describe('with missing characterId and comicId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.remove_favorite()).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with non-integer characterId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.remove_favorite({characterId: 'test'})).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with non-integer comicId', () => {
+      it('should be rejected with TypeError', () => {
+        expect.assertions(1);
+        return expect(MarvelData.remove_favorite({comicId: 'test'})).rejects.toBeInstanceOf(TypeError);
+      });
+    });
+
+    describe('with valid characterId', () => {
+      it('should return an object', () => {
+        jest.mock('jquery');
+        const favoriteReponse = {one: 'two'};
+        $.setResponse({favorite: favoriteReponse});
+        expect.assertions(1);
+        return expect(MarvelData.remove_favorite({characterId: 123})).resolves.toEqual(favoriteReponse);
+      });
+    });
+
+    describe('with valid comicId', () => {
+      it('should return an object', () => {
+        jest.mock('jquery');
+        const favoriteReponse = {one: 'two'};
+        $.setResponse({favorite: favoriteReponse});
+        expect.assertions(1);
+        return expect(MarvelData.remove_favorite({comicId: 123})).resolves.toEqual(favoriteReponse);
+      });
     });
 
   });

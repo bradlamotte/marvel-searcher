@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Glyphicon } from 'react-bootstrap';
 import '../style/favorite-control.css';
-import $ from 'jquery';
+import MarvelData from '../data/marvel-data';
 
 export default class FavoriteControl extends React.Component{
   constructor(props){
@@ -17,46 +17,40 @@ export default class FavoriteControl extends React.Component{
 
   _changeStatus(e){
     e.preventDefault();
-    let endpoint;
-
-    if(this.props.characterId){
-      endpoint = `/favorites?characterId=${this.props.characterId}&name=${this.props.name}`;
-    } else if(this.props.comicId){
-      endpoint = `/favorites?comicId=${this.props.comicId}&name=${this.props.name}`;
-    }
 
     if(this.state.isFavorite){
-      this._removeFavorite(endpoint);
+      this._removeFavorite();
     } else {
-      this._addFavorite(endpoint);
+      this._addFavorite();
     }
   }
 
   _addFavorite(endpoint){
-    $.post(endpoint)
-      .done(result=>{
-        console.log("added favorite");
-        this.setState({ isFavorite: true });
-      })
-      .fail(err=>{
-        console.log("error when adding favorite %o", err.responseText);
-      });
+    MarvelData.add_favorite({
+      characterId: this.props.characterId,
+      comicId: this.props.comicId,
+      name: this.props.name
+    }).then(result => {
+      console.log("added favorite");
+      this.setState({ isFavorite: true });
+    }).catch(err=>{
+      console.log("error when adding favorite %o", err.responseText);
+    });
   }
 
   _removeFavorite(endpoint){
-    $.ajax({
-      url: endpoint,
-      type: 'DELETE',
-      success: (result) => {
-        console.log("removed favorite");
-        this.setState({ isFavorite: false });
-        if(this.props.onRemoved){
-          this.props.onRemoved({characterId: this.props.characterId, comicId: this.props.comicId});
-        }
-      },
-      fail: (err) => {
-        console.log("error when removing favorite", err);
+    MarvelData.remove_favorite({
+      characterId: this.props.characterId,
+      comicId: this.props.comicId,
+      name: this.props.name
+    }).then(result => {
+      console.log("removed favorite");
+      this.setState({ isFavorite: false });
+      if(this.props.onRemoved){
+        this.props.onRemoved(result);
       }
+    }).catch(err => {
+      console.log("error when removing favorite", err);
     });
   }
 
