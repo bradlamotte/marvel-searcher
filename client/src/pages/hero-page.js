@@ -5,6 +5,8 @@ import FavoriteControl from '../components/favorite-control';
 import { PageHeader } from 'react-bootstrap';
 import '../style/hero-page.css';
 import MarvelData from '../data/marvel-data';
+import { connect } from 'react-redux'
+import setCharacterIdAction from '../actions/set-character-id'
 
 class HeroPage extends React.Component{
   constructor(props) {
@@ -18,34 +20,36 @@ class HeroPage extends React.Component{
   }
 
   componentDidMount() {
-    this._getCharacter(this.props.match.params.characterId);
+    if(this.props.match.params.characterId){
+      this.props.setCharacterId(this.props.match.params.characterId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    this._getCharacter(nextProps.match.params.characterId);
+    if(nextProps.match.params.characterId){
+      this._getCharacter(nextProps.match.params.characterId);
+    }
   }
 
   _getCharacter(characterId){
-    if(characterId){
-
-      MarvelData.get_character(characterId)
-        .then(response=>{
-          console.log("character retrieved", response);
-          this.setState({
-            character: response.character,
-            isFavorite: response.favorite
-          });
-        })
-        .catch((response)=>{
-          console.log("error getting character", response);
-          this.setState({ errorMessage: response.responseText });
+    MarvelData.get_character(characterId)
+      .then(response=>{
+        console.log("character retrieved", response);
+        this.setState({
+          character: response.character,
+          isFavorite: response.favorite
         });
-    }
+      })
+      .catch((response)=>{
+        console.log("error getting character", response);
+        this.setState({ errorMessage: response.responseText });
+      });
   }
 
   onResultSelected(character){
     if(character && character.id){
       this.setState({ errorMessage: '' });
+      this.props.setCharacterId(character.id);
       this.props.history.push(`/heroes/${character.id}`);
     }
   }
@@ -82,4 +86,16 @@ class HeroPage extends React.Component{
   }
 }
 
-export default HeroPage;
+function mapStateToProps(state){
+  return { characterId: state.characterId }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setCharacterId: (characterId) => {
+      dispatch(setCharacterIdAction(characterId))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeroPage);
