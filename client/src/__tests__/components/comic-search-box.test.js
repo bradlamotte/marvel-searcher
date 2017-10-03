@@ -1,5 +1,5 @@
 import React from 'react';
-import ComicSearchBox from '../components/comic-search-box';
+import ComicSearchBox from '../../components/comic-search-box';
 import { mount } from 'enzyme';
 
 describe('SearchBox integration', function(){

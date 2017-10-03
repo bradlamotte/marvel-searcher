@@ -1,5 +1,5 @@
 import React from 'react';
-import CharacterSearchBox from '../components/character-search-box';
+import CharacterSearchBox from '../../components/character-search-box';
 import { mount } from 'enzyme';
 
 describe('SearchBox integration', function(){

@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBox from '../components/search-box';
+import SearchBox from '../../components/search-box';
 import { mount } from 'enzyme';
 
 describe('Autosuggest integration', function(){

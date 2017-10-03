@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow, mount } from 'enzyme';
-import MarvelImage from '../components/marvel-image';
+import MarvelImage from '../../components/marvel-image';
 
 const IMAGE_DATA = {
   path: 'http://test.com',

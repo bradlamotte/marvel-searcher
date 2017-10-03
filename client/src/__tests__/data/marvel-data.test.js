@@ -1,4 +1,4 @@
-import MarvelData from '../data/marvel-data';
+import MarvelData from '../../data/marvel-data';
 import $ from 'jquery';
 
 describe('MarvelData', function(){
