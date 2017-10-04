@@ -17,11 +17,6 @@ it('renders without crashing', () => {
   ReactDOM.render(<MarvelImage imageData={IMAGE_DATA} />, div);
 });
 
-it('does not render when no imageData passed in', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<MarvelImage />, div);
-});
-
 it('renders proper image url format using imageData passed in', () => {
   const image = shallow(<MarvelImage imageData={IMAGE_DATA} />);
   expect(image.instance()._url()).toBe(_imageFormat(IMAGE_DATA, DEFAULT_STYLE));
