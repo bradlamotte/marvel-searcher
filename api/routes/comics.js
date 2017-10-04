@@ -49,10 +49,8 @@ router.get('/:id', function(req, res){
       return Favorite.get({comicId: req.params.id});
     })
     .then(favorite => {
-      res.json({
-        favorite: (favorite.comicId == req.params.id),
-        comic: comic
-      });
+      comic.favorite = (favorite.comicId == req.params.id)
+      res.json({ comic });
     })
     .catch((err)=>{
       handleProcessingError(res, err);

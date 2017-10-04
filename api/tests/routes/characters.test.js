@@ -115,7 +115,7 @@ describe('routes/characters', function(){
             .then(result => {
               // make request to find a character
               req.expect((res)=>{
-                res.body.favorite.should.be.true;
+                res.body.character.favorite.should.be.true;
               })
               .end(done);
             })
@@ -126,7 +126,7 @@ describe('routes/characters', function(){
       describe('when character is not a favorite', function(){
         it('should respond with favorite: false', function(done){
           req.expect((res)=>{
-            res.body.favorite.should.be.false;
+            res.body.character.favorite.should.be.false;
           })
           .end(done);
         });

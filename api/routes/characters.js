@@ -49,10 +49,8 @@ router.get('/:id', function(req, res){
       return Favorite.get({characterId: req.params.id});
     })
     .then(favorite => {
-      res.json({
-        favorite: (favorite.characterId == req.params.id),
-        character: character
-      });
+      character.favorite = (favorite.characterId == req.params.id);
+      res.json({ character });
     })
     .catch((err)=>{
       handleProcessingError(res, err);

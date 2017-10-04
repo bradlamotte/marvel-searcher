@@ -116,7 +116,7 @@ describe('routes/comics', function(){
                 .get('/comics/123')
                 // make request to find a comic
                 .expect((res)=>{
-                  res.body.favorite.should.be.true;
+                  res.body.comic.favorite.should.be.true;
                 })
               .end(done);
             })
@@ -129,7 +129,7 @@ describe('routes/comics', function(){
           request(app)
             .get('/comics/123')
             .expect((res)=>{
-              res.body.favorite.should.be.false;
+              res.body.comic.favorite.should.be.false;
             })
             .end(done);
         });
