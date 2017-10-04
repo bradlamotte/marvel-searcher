@@ -2,20 +2,18 @@ import React from 'react';
 import ComicSearchBox from '../components/comic-search-box';
 import Comic from '../components/comic';
 import { PageHeader } from 'react-bootstrap';
+import ErrorMessage from '../components/error-message';
 import MarvelData from '../data/marvel-data';
-import FavoriteControl from '../components/favorite-control';
-import '../style/comic-page.css';
 import { connect } from 'react-redux'
 import setComicIdAction from '../actions/set-comic-id'
+import setComicAction from '../actions/set-comic'
+import clearComicIdAction from '../actions/clear-comic-id'
+import clearComicAction from '../actions/clear-comic'
 
 class ComicPage extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {
-      comic: null,
-      errorMessage: '',
-      isFavorite: false
-    };
+    this.state = { errorMessage: '' };
     this.onResultSelected = this.onResultSelected.bind(this);
   }
 
@@ -23,6 +21,11 @@ class ComicPage extends React.Component{
     if(this.props.match.params.comicId){
       this.props.setComicId(this.props.match.params.comicId);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clearComicId();
+    this.props.clearComic();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,10 +38,7 @@ class ComicPage extends React.Component{
     MarvelData.get_comic(comicId)
       .then((response)=>{
         console.log("comic retrieved %o", response.comic);
-        this.setState({
-          comic: response.comic,
-          isFavorite: response.favorite
-        });
+        this.props.setComic(response.comic);
       })
       .catch((response)=>{
         console.log("error getting comic %o", response.responseJSON);
@@ -54,33 +54,13 @@ class ComicPage extends React.Component{
     }
   }
 
-  _displayErrorMessage(){
-    if(this.state.errorMessage.length > 0){
-      return(
-        <div className="alert alert-danger">
-          {this.state.errorMessage}
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-
   render(){
     return(
       <div id="comic-page">
         <PageHeader>Comics</PageHeader>
         <ComicSearchBox onResultSelected={this.onResultSelected} />
-
-        {this._displayErrorMessage()}
-
-        {this.state.comic &&
-          <div className="favorite-control-wrapper">
-            <FavoriteControl isFavorite={this.state.isFavorite} comicId={this.state.comic.id} name={this.state.comic.title} />
-          </div>
-        }
-
-        {this.state.comic && <Comic comic={this.state.comic} />}
+        <ErrorMessage msg={this.state.errorMessage} />
+        <Comic />
       </div>
     );
   }
@@ -94,6 +74,15 @@ function mapDispatchToProps(dispatch) {
   return {
     setComicId: (comicId) => {
       dispatch(setComicIdAction(comicId))
+    },
+    setComic: (comic) => {
+      dispatch( setComicAction(comic) );
+    },
+    clearComicId: () => {
+      dispatch( clearComicIdAction() )
+    },
+    clearComic: () => {
+      dispatch( clearComicAction() )
     }
   }
 }

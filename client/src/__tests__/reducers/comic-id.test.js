@@ -7,7 +7,6 @@ describe('comic id reducer', () => {
   })
 
   describe('when SET_COMIC_ID dispatched', () => {
-
     it('should update comicId', () => {
       expect(reducer({}, {
         type: 'SET_COMIC_ID',
@@ -16,6 +15,15 @@ describe('comic id reducer', () => {
       .toEqual({
         comicId: 123
       })
+    })
+  })
+
+  describe('when CLEAR_COMIC_ID dispatched', () => {
+    it('should remove comicId', () => {
+      expect(reducer({}, {
+        type: 'CLEAR_COMIC_ID'
+      }))
+      .toBeNull()
     })
   })
 
