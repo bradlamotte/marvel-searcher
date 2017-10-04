@@ -1,21 +1,19 @@
 import React from 'react';
 import CharacterSearchBox from '../components/character-search-box';
 import Character from '../components/character';
-import FavoriteControl from '../components/favorite-control';
 import { PageHeader } from 'react-bootstrap';
-import '../style/hero-page.css';
+import ErrorMessage from '../components/error-message';
 import MarvelData from '../data/marvel-data';
 import { connect } from 'react-redux'
 import setCharacterIdAction from '../actions/set-character-id'
+import clearCharacterIdAction from '../actions/clear-character-id'
+import setCharacterAction from '../actions/set-character'
+import clearCharacterAction from '../actions/clear-character'
 
 class HeroPage extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {
-      character: null,
-      errorMessage: '',
-      isFavorite: false
-    };
+    this.state = { errorMessage: '' };
     this.onResultSelected = this.onResultSelected.bind(this);
   }
 
@@ -25,9 +23,14 @@ class HeroPage extends React.Component{
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearCharacterId();
+    this.props.clearCharacter();
+  }
+
   componentWillReceiveProps(nextProps) {
-    if(nextProps.match.params.characterId){
-      this._getCharacter(nextProps.match.params.characterId);
+    if(nextProps.characterId){
+      this._getCharacter(nextProps.characterId);
     }
   }
 
@@ -35,10 +38,7 @@ class HeroPage extends React.Component{
     MarvelData.get_character(characterId)
       .then(response=>{
         console.log("character retrieved", response);
-        this.setState({
-          character: response.character,
-          isFavorite: response.favorite
-        });
+        this.props.setCharacter(response.character);
       })
       .catch((response)=>{
         console.log("error getting character", response);
@@ -54,33 +54,13 @@ class HeroPage extends React.Component{
     }
   }
 
-  _displayErrorMessage(){
-    if(this.state.errorMessage.length > 0){
-      return(
-        <div className="alert alert-danger">
-          {this.state.errorMessage}
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-
   render(){
     return(
       <div id="hero-page">
         <PageHeader>Heroes</PageHeader>
         <CharacterSearchBox onResultSelected={this.onResultSelected} />
-
-        {this._displayErrorMessage()}
-
-        {this.state.character &&
-          <div className="favorite-control-wrapper">
-            <FavoriteControl isFavorite={this.state.isFavorite} characterId={this.state.character.id} name={this.state.character.name} />
-          </div>
-        }
-
-        {this.state.character && <Character character={this.state.character} />}
+        <ErrorMessage msg={this.state.errorMessage} />
+        <Character />
       </div>
     );
   }
@@ -94,6 +74,15 @@ function mapDispatchToProps(dispatch) {
   return {
     setCharacterId: (characterId) => {
       dispatch(setCharacterIdAction(characterId))
+    },
+    setCharacter: (character) => {
+      dispatch(setCharacterAction(character))
+    },
+    clearCharacterId: () => {
+      dispatch(clearCharacterIdAction())
+    },
+    clearCharacter: () => {
+      dispatch(clearCharacterAction())
     }
   }
 }
