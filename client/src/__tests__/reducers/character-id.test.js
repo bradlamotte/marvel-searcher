@@ -1,4 +1,6 @@
 import reducer from '../../reducers/character-id'
+import setCharacterIdAction from '../../actions/set-character-id';
+import clearCharacterIdAction from '../../actions/clear-character-id';
 
 describe('character id reducer', () => {
 
@@ -8,19 +10,14 @@ describe('character id reducer', () => {
 
   describe('when SET_CHARACTER_ID dispatched', () => {
     it('should update characterId', () => {
-      expect(reducer({}, {
-        type: 'SET_CHARACTER_ID',
-        characterId: 123
-      }))
+      expect(reducer({}, setCharacterIdAction(123)))
       .toEqual(123)
     })
   })
 
   describe('when CLEAR_CHARACTER_ID dispatched', () => {
     it('should remove characterId', () => {
-      expect(reducer({}, {
-        type: 'CLEAR_CHARACTER_ID'
-      }))
+      expect(reducer({}, clearCharacterIdAction()))
       .toBeNull()
     })
   })

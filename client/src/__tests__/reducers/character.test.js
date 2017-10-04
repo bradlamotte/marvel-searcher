@@ -1,4 +1,6 @@
 import reducer from '../../reducers/character'
+import setCharacterAction from '../../actions/set-character';
+import clearCharacterAction from '../../actions/clear-character';
 
 describe('character reducer', () => {
 
@@ -13,19 +15,14 @@ describe('character reducer', () => {
         description: 'Strong guy'
       };
 
-      expect(reducer({}, {
-        type: 'SET_CHARACTER',
-        character
-      }))
+      expect(reducer({}, setCharacterAction(character)))
       .toEqual(character)
     })
   })
 
   describe('when CLEAR_CHARACTER dispatched', () => {
     it('should remove character', () => {
-      expect(reducer({}, {
-        type: 'CLEAR_CHARACTER'
-      }))
+      expect(reducer({}, clearCharacterAction()))
       .toBeNull()
     })
   })

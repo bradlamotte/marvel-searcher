@@ -1,4 +1,6 @@
 import reducer from '../../reducers/comic-id'
+import setComicIdAction from '../../actions/set-comic-id';
+import clearComicIdAction from '../../actions/clear-comic-id';
 
 describe('comic id reducer', () => {
 
@@ -8,21 +10,14 @@ describe('comic id reducer', () => {
 
   describe('when SET_COMIC_ID dispatched', () => {
     it('should update comicId', () => {
-      expect(reducer({}, {
-        type: 'SET_COMIC_ID',
-        comicId: 123
-      }))
-      .toEqual({
-        comicId: 123
-      })
+      expect(reducer({}, setComicIdAction(123)))
+      .toEqual(123)
     })
   })
 
   describe('when CLEAR_COMIC_ID dispatched', () => {
     it('should remove comicId', () => {
-      expect(reducer({}, {
-        type: 'CLEAR_COMIC_ID'
-      }))
+      expect(reducer({}, clearComicIdAction()))
       .toBeNull()
     })
   })

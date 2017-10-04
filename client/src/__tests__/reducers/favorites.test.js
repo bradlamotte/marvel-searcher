@@ -1,4 +1,6 @@
 import reducer from '../../reducers/favorites'
+import setFavoritesAction from '../../actions/set-favorites';
+import clearFavoritesAction from '../../actions/clear-favorites';
 
 describe('favorites reducer', () => {
 
@@ -13,19 +15,14 @@ describe('favorites reducer', () => {
         { name: 'Avengers', comicId: 456 }
       ];
 
-      expect(reducer({}, {
-        type: 'SET_FAVORITES',
-        favorites
-      }))
+      expect(reducer({}, setFavoritesAction(favorites)))
       .toEqual(favorites)
     })
   })
 
   describe('when CLEAR_FAVORITES dispatched', () => {
     it('should remove favorites', () => {
-      expect(reducer({}, {
-        type: 'CLEAR_FAVORITES'
-      }))
+      expect(reducer({}, clearFavoritesAction()))
       .toEqual([])
     })
   })

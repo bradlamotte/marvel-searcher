@@ -29,8 +29,8 @@ class ComicPage extends React.Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.match.params.comicId){
-      this._getComic(nextProps.match.params.comicId);
+    if(nextProps.comicId){
+      this._getComic(nextProps.comicId);
     }
   }
 

@@ -1,4 +1,6 @@
 import reducer from '../../reducers/comic'
+import setComicAction from '../../actions/set-comic';
+import clearComicAction from '../../actions/clear-comic';
 
 describe('comic reducer', () => {
 
@@ -13,19 +15,14 @@ describe('comic reducer', () => {
         description: 'Bunch of heroes'
       };
 
-      expect(reducer({}, {
-        type: 'SET_COMIC',
-        comic
-      }))
+      expect(reducer({}, setComicAction(comic)))
       .toEqual(comic)
     })
   })
 
   describe('when CLEAR_COMIC dispatched', () => {
     it('should remove comic', () => {
-      expect(reducer({}, {
-        type: 'CLEAR_COMIC'
-      }))
+      expect(reducer({}, clearComicAction()))
       .toBeNull()
     })
   })
