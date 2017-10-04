@@ -7,15 +7,21 @@ describe('character id reducer', () => {
   })
 
   describe('when SET_CHARACTER_ID dispatched', () => {
-
     it('should update characterId', () => {
       expect(reducer({}, {
         type: 'SET_CHARACTER_ID',
         characterId: 123
       }))
-      .toEqual({
-        characterId: 123
-      })
+      .toEqual(123)
+    })
+  })
+
+  describe('when CLEAR_CHARACTER_ID dispatched', () => {
+    it('should remove characterId', () => {
+      expect(reducer({}, {
+        type: 'CLEAR_CHARACTER_ID'
+      }))
+      .toBeNull()
     })
   })
 
