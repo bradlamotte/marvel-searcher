@@ -85,11 +85,18 @@ export default class MarvelData {
   }
 
   static _favoriteEndpoint(favoriteData = {}){
+    let endpoint;
     if(favoriteData.characterId){
-      return `/favorites?characterId=${favoriteData.characterId}&name=${favoriteData.name}`;
+      endpoint = `/favorites?characterId=${favoriteData.characterId}`
     } else if(favoriteData.comicId){
-      return `/favorites?comicId=${favoriteData.comicId}&name=${favoriteData.name}`;
+      endpoint = `/favorites?comicId=${favoriteData.comicId}`
     }
+
+    if(favoriteData.name){
+      endpoint += `&name=${favoriteData.name}`
+    }
+
+    return endpoint;
   }
 
   static add_favorite(favoriteData = {}) {

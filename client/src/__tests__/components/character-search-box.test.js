@@ -1,8 +1,9 @@
 import React from 'react';
 import CharacterSearchBox from '../../components/character-search-box';
 import { mount } from 'enzyme';
+import MarvelData from '../../data/marvel-data'
 
-describe('SearchBox integration', function(){
+describe('CharacterSearchBox', function(){
   let mountedCharacterSearchBox;
   let mountedSearchBox;
 
@@ -52,5 +53,18 @@ describe('SearchBox integration', function(){
       expect(searchBox().props().getSuggestions).toEqual(characterSearchBox().instance()._getSuggestions);
     });
   });
+
+  describe('when SearchBox asks for suggestions', ()=> {
+    it('_getSuggestions calls MarvelData.character_search with the correct parameter', ()=> {
+      expect.assertions(1)
+      const md = jest.spyOn(MarvelData, 'character_search')
+
+      return characterSearchBox().instance()._getSuggestions('test')
+        .catch(err => {})
+        .then(err => {
+          expect(md).toHaveBeenCalledWith('test')
+        })
+    })
+  })
 
 });

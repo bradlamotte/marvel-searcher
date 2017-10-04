@@ -22,9 +22,14 @@ export default class SearchBox extends React.Component{
 
   _onSuggestionsFetchRequested = ({ value }) => {
     this.props.onResultSelected(null);
-    this.props.getSuggestions(value).then(suggestions => {
-      this.setState({ suggestions: suggestions });
-    });
+    this.props.getSuggestions(value)
+      .then(suggestions => {
+        console.log("suggestions", suggestions)
+        this.setState({ suggestions: suggestions });
+      })
+      .catch(err => {
+        this.setState({ suggestions: [] })
+      });
   };
 
   _shouldRenderSuggestions = value => {

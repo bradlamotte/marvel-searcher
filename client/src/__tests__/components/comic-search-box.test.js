@@ -1,6 +1,7 @@
 import React from 'react';
 import ComicSearchBox from '../../components/comic-search-box';
 import { mount } from 'enzyme';
+import MarvelData from '../../data/marvel-data'
 
 describe('SearchBox integration', function(){
   let mountedComicSearchBox;
@@ -51,6 +52,19 @@ describe('SearchBox integration', function(){
     it('passes ComicSearchBox internal _getSuggestions method', () => {
       expect(searchBox().props().getSuggestions).toEqual(comicSearchBox().instance()._getSuggestions);
     });
-  });
+  })
+
+  describe('when SearchBox asks for suggestions', ()=> {
+    it('_getSuggestions calls MarvelData.comic_search with the correct parameter', ()=> {
+      expect.assertions(1)
+      const md = jest.spyOn(MarvelData, 'comic_search')
+
+      return comicSearchBox().instance()._getSuggestions('test')
+        .catch(err => {})
+        .then(err => {
+          expect(md).toHaveBeenCalledWith('test')
+        })
+    })
+  })
 
 });
