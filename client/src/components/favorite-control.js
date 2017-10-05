@@ -69,9 +69,13 @@ export default class FavoriteControl extends React.Component{
 }
 
 FavoriteControl.propTypes = {
-  isFavorite: PropTypes.bool.isRequired,
+  isFavorite: PropTypes.bool,
   name: PropTypes.string.isRequired,
   characterId: PropTypes.number,
   comicId: PropTypes.number,
   onRemoved: PropTypes.func
-};
+}
+
+FavoriteControl.defaultProps = {
+  isFavorite: false
+}
