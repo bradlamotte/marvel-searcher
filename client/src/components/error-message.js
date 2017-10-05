@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Comic extends React.Component{
+export default class ErrorMessage extends React.Component{
   render(){
     if(this.props.msg){
       return (
