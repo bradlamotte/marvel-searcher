@@ -4,7 +4,7 @@
   "description": "API backend for Marvel Searcher app",
   "main": "bin/www",
   "scripts": {
-    "test": "NODE_ENV=test mocha tests/*/*.test.js",
+    "test": "NODE_ENV=test nyc mocha tests/*/*.test.js",
     "start": "NODE_ENV=development nodemon bin/www"
   },
   "author": "",
@@ -26,6 +26,7 @@
     "mocha": "^4.0.1",
     "nock": "^9.0.14",
     "nodemon": "^1.12.1",
+    "nyc": "^11.2.1",
     "should": "^13.0.1",
     "supertest": "^3.0.0"
   }

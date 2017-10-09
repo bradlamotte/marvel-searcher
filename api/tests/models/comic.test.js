@@ -57,6 +57,17 @@ describe('models/comic', function(){
       });
     });
 
+    describe('with valid comicId but MarvelData returns wrong format', () => {
+      before(() => {
+        const mock = new MarvelDataMock();
+        mock.comic_find_empty();
+      });
+
+      it('should be rejected with Error', (done) => {
+        Comic.find(123).should.eventually.be.rejectedWith(Error).notify(done)
+      })
+    })
+
     describe('with valid comicId', function(){
       before(() => {
         const mock = new MarvelDataMock();

@@ -57,6 +57,17 @@ describe('models/character', function(){
       });
     });
 
+    describe('with valid characterId but MarvelData returns wrong format', () => {
+      before(() => {
+        const mock = new MarvelDataMock();
+        mock.character_find_empty();
+      });
+
+      it('should be rejected with Error', (done) => {
+        Character.find(123).should.eventually.be.rejectedWith(Error).notify(done)
+      })
+    })
+
     describe('with valid characterId', function(){
       before(() => {
         const mock = new MarvelDataMock();

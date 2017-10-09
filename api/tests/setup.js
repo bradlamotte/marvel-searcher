@@ -8,6 +8,10 @@ const should = chai.should();
 
 class Setup{
 
+  static db(){
+    return DB
+  }
+
   static db_connection(done){
     DB.connect(done);
   }

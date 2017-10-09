@@ -27,6 +27,14 @@ class MarvelDataMock{
       .reply(200, {data: {results: [{id: 1009351, name: 'Hulk', description: 'Strong guy'}]}});
   }
 
+  // Mock a response when finding a character returns the wrong json format
+  character_find_empty(){
+    nock(process.env.MARVEL_ENDPOINT)
+      .get(/\/characters\/.+/)
+      .query(true)
+      .reply(200, {})
+  }
+
   // Mock a successful response with results when searching for
   // comics on Marvel API
   comic_search(){
@@ -50,6 +58,14 @@ class MarvelDataMock{
         .get(/\/comics\/.+/)
         .query(true)
         .reply(200, {data: {results: [{id: 59551, name: 'Hulk and Friends', description: 'Strong guy with his strong friends'}]}});
+    }
+
+    // Mock a response when finding a comic returns the wrong json format
+    comic_find_empty(){
+      nock(process.env.MARVEL_ENDPOINT)
+        .get(/\/comics\/.+/)
+        .query(true)
+        .reply(200, {})
     }
 }
 
