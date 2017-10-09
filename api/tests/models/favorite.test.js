@@ -1,6 +1,5 @@
 const Setup = require('../setup');
 const Favorite = require('../../models/favorite');
-const Promise = require('promise');
 
 describe('models/favorite', function(){
   before(function(done) {

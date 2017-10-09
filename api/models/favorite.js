@@ -1,5 +1,4 @@
 const db = require('../db/db');
-const request = require('request');
 const Promise = require('promise');
 const MarvelData = require('../services/marvel-data');
 
@@ -16,45 +15,19 @@ class Favorite{
   // Returns the total number of favorites in the database
   // Class method
   // Returns a Promise
-  static count(){
-    return new Promise((resolve, reject)=>{
-      db.favorites().find().count((err, cnt)=>{
-        if(err){
-          reject(err)
-        } else {
-          resolve(cnt);
-        }
-      });
-    });
+  static async count(){
+    return await db.favorites().find().count()
   }
 
   // Creates a new favorite in the database.
   // Validates model attributes before inserting.
   // Class method
   // Returns a Promise
-  add(){
-    return new Promise((resolve, reject)=>{
-      try{
-        this.validate();
-
-        if(!this.name){
-          throw new TypeError('Name is required');
-        }
-
-        db.favorites().insertOne(
-          this._toInsertJSON(),
-          (err, result)=>{
-            if(err){
-              reject(err)
-            } else {
-              resolve(this);
-            }
-          }
-        );
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async add(){
+    this.validate();
+    if(!this.name) { throw new TypeError('Name is required') }
+    await db.favorites().insertOne(this._toInsertJSON())
+    return this
   }
 
   // Object format used to insert into database
@@ -81,82 +54,47 @@ class Favorite{
   // Accepts a parms object containing either characterId or comicId
   // Returns a single favorite
   // Returns a Promise
-  static get(params = {}){
-    return new Promise((resolve, reject)=>{
-      const characterId = parseInt(params.characterId);
-      const comicId = parseInt(params.comicId);
+  static async get(params = {}){
+    const characterId = parseInt(params.characterId);
+    const comicId = parseInt(params.comicId);
 
-      if(!characterId && !comicId){
-        reject(new TypeError("A valid characterId or comicId must be passed in"));
-      } else if(characterId && comicId){
-        reject(new TypeError("A characterId and comicId cannot both be passed in"));
-      } else {
+    if(!characterId && !comicId) { throw new TypeError("A valid characterId or comicId must be passed in") }
+    if(characterId && comicId) { throw new TypeError("A characterId and comicId cannot both be passed in") }
 
-        let query;
-        let project;
+    let query;
+    let project;
 
-        if(characterId){
-          query = { characterId: characterId };
-          project = {characterId: true, _id: false};
-        } else if(comicId){
-          query = { comicId: comicId };
-          project = {comicId: true, _id: false};
-        }
+    if(characterId){
+      query = { characterId: characterId };
+      project = {characterId: true, _id: false};
+    } else if(comicId){
+      query = { comicId: comicId };
+      project = {comicId: true, _id: false};
+    }
 
-        db.favorites().find(query, project).toArray((err, results) => {
-          if(err){
-            reject(err);
-          } else {
-            const favorite = results.length > 0 ? results[0] : {};
-            resolve(favorite);
-          }
-        });
-      }
-    });
+    const results = await db.favorites().find(query, project).toArray()
+    return results.length > 0 ? results[0] : {};
   }
 
   // Class method
   // Queries db for favorites
   // Returns a an array of favorites
   // Returns a Promise
-  static getAll(params = {}){
-    return new Promise((resolve, reject)=>{
-      db.favorites()
-        .find({}, {_id: false})
-        .sort({name: 1})
-        .toArray((err, results) => {
-          if(err){
-            reject(err);
-          } else {
-            resolve(results);
-          }
-      });
-    });
+  static async getAll(params = {}){
+    return await db.favorites()
+      .find({}, {_id: false})
+      .sort({name: 1})
+      .toArray()
   }
 
   // Removes a favorite from the database.
   // Validates model attributes before inserting.
   // Class method
   // Returns a Promise
-  remove(){
-    return new Promise((resolve, reject)=>{
-      try{
-        this.validate();
-
-        db.favorites().deleteOne(
-          this._toDeleteJSON(),
-          (err, result)=>{
-            if(err){
-              reject(err)
-            } else {
-              resolve(this);
-            }
-          }
-        );
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async remove(){
+    this.validate();
+    await db.favorites().deleteOne(this._toDeleteJSON())
+    return this
   }
 
   // Object format used to delete from database

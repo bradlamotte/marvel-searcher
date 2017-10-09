@@ -37,12 +37,13 @@ class HeroPage extends React.Component{
   _getCharacter(characterId){
     MarvelData.get_character(characterId)
       .then(response=>{
-        console.log("character retrieved", response);
+        console.log("character retrieved %o", response);
         this.props.setCharacter(response.character);
       })
-      .catch((response)=>{
-        console.log("error getting character", response);
-        this.setState({ errorMessage: response.responseText });
+      .catch((err)=>{
+        const msg = err.responseText || err.message;
+        console.log("error getting character %o", msg);
+        this.setState({ errorMessage: msg });
       });
   }
 

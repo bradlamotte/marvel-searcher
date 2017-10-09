@@ -1,4 +1,4 @@
-const request = require('request');
+const request = require('request-promise-native');
 const MarvelData = require('../services/marvel-data');
 const HttpNotFoundError = require('../errors/http-not-found-error');
 
@@ -14,46 +14,32 @@ class Comic{
   // Calls Marvel api to search for comics by name
   // Class method
   // Returns a Promise
-  static search(search_term){
-    return new Promise((resolve, reject)=>{
-      if(!search_term) {
-        reject(new TypeError("Search term cannot be empty"))
-      } else if(search_term.length < 3) {
-        reject(new TypeError("Search term must be at least 3 characters"))
-      } else {
-        let requestConfig = MarvelData.requestConfig('/comics', { titleStartsWith: search_term });
-        request(requestConfig, (error, response, body) => {
-          if(error) reject(error);
-          resolve(JSON.parse(body).data.results);
-        });
-      }
-    });
+  static async search(search_term){
+    if(!search_term) { throw new TypeError("Search term cannot be empty") }
+    if(search_term.length < 3) { throw new TypeError("Search term must be at least 3 characters") }
+    let requestConfig = MarvelData.requestConfig('/comics', { titleStartsWith: search_term });
+    const response = await request(requestConfig)
+    return response.data.results
   }
 
   // Calls Marvel api to find a specific comic
   // Class method
   // Returns a Promise
-  static find(comicId){
-    return new Promise((resolve, reject)=>{
-      const id = parseInt(comicId);
-      if(!id) {
-        reject(new TypeError('comicId must be an integer'))
-      } else {
-        const requestConfig = MarvelData.requestConfig(`/comics/${id}`);
+  static async find(comicId){
+    const id = parseInt(comicId)
+    if(!id) { throw new TypeError('comicId must be an integer') }
 
-        request(requestConfig, (error, response, body) => {
-          if(error){
-            reject(error);
-          } else if(response.statusCode == 404){
-            reject(new HttpNotFoundError("We couldn't find that comic", 404));
-          } else {
-            const data = JSON.parse(body).data.results[0];
-            const comic = new Comic(data);
-            resolve(comic);
-          }
-        });
+    try{
+      const requestConfig = MarvelData.requestConfig(`/comics/${id}`)
+      const response = await request(requestConfig)
+      return new Comic(response.data.results[0])
+    } catch (err) {
+      if(err.statusCode == 404){
+        throw new HttpNotFoundError("We couldn't find that character", 404)
+      } else {
+        throw err
       }
-    });
+    }
   }
 }
 

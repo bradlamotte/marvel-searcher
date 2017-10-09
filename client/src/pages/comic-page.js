@@ -40,9 +40,10 @@ class ComicPage extends React.Component{
         console.log("comic retrieved %o", response.comic);
         this.props.setComic(response.comic);
       })
-      .catch((response)=>{
-        console.log("error getting comic %o", response.responseJSON);
-        this.setState({ errorMessage: response.responseJSON.error });
+      .catch((err)=>{
+        const msg = err.responseText || err.message;
+        console.log("error getting comic %o", msg);
+        this.setState({ errorMessage: msg });
       });
   }
 

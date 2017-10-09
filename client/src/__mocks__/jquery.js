@@ -6,22 +6,16 @@ function setResponse(json){
   responseJSON = json;
 }
 
-function getJSON(url) {
-  return new Promise((resolve, reject) => {
-    resolve(responseJSON);
-  });
+async function getJSON(url) {
+  return responseJSON
 }
 
-function post(url){
-  return new Promise((resolve, reject) => {
-    resolve(responseJSON);
-  });
+async function post(url){
+  return responseJSON
 }
 
-function ajax(config){
-  return new Promise((resolve, reject) => {
-    resolve(responseJSON);
-  });
+async function ajax(config){
+  return responseJSON
 }
 
 jquery.setResponse = setResponse;

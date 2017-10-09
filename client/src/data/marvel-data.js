@@ -2,86 +2,35 @@ import $ from 'jquery';
 
 export default class MarvelData {
 
-  static character_search(search_term = '') {
-    return new Promise((resolve, reject)=>{
-      if(search_term.length >= 3){
-        const searchUrl = `/characters/?search_term=${search_term}`;
-
-        $.getJSON(searchUrl)
-          .then((response) => {
-            resolve(response.results);
-          })
-          .catch((err)=>{
-            reject(err);
-          });
-      } else {
-        reject(new TypeError('Search term must be at least 3 characters'));
-      }
-    });
+  static async character_search(search_term = '') {
+    if(search_term.length < 3) { throw new TypeError('Search term must be at least 3 characters') }
+    const searchUrl = `/characters/?search_term=${search_term}`;
+    const response = await $.getJSON(searchUrl)
+    return response.results
   }
 
-  static get_character(characterId) {
-    return new Promise((resolve, reject) => {
-      if(parseInt(characterId, 10) > 0){
-
-        $.getJSON(`/characters/${characterId}`)
-          .then(response => {
-            resolve(response);
-          })
-          .catch(err => {
-            reject(err);
-          });
-      } else {
-        reject(new TypeError('CharacterId must be an integer'));
-      }
-    })
+  static async get_character(characterId) {
+    const id = parseInt(characterId, 10)
+    if(!Number.isInteger(id)) { throw new TypeError('CharacterId must be an integer') }
+    return await $.getJSON(`/characters/${id}`)
   }
 
-  static comic_search(search_term) {
-    return new Promise((resolve, reject)=>{
-      if(search_term.length >= 3){
-        const searchUrl = `/comics/?search_term=${search_term}`;
-
-        $.getJSON(searchUrl)
-          .then((response) => {
-            resolve(response.results);
-          })
-          .catch((err)=>{
-            reject(err);
-          })
-      } else {
-        reject(new TypeError('Search term must be at least 3 characters'));
-      }
-    });
+  static async comic_search(search_term) {
+    if(search_term.length < 3) { throw new TypeError('Search term must be at least 3 characters') }
+    const searchUrl = `/comics/?search_term=${search_term}`;
+    const response = await $.getJSON(searchUrl)
+    return response.results
   }
 
-  static get_comic(comicId) {
-    return new Promise((resolve, reject) => {
-      if(parseInt(comicId, 10) > 0){
-
-        $.getJSON(`/comics/${comicId}`)
-          .then(response => {
-            resolve(response);
-          })
-          .catch(err => {
-            reject(err);
-          });
-      } else {
-        reject(new TypeError('ComicId must be an integer'));
-      }
-    })
+  static async get_comic(comicId) {
+    const id = parseInt(comicId, 10)
+    if(!Number.isInteger(id)) { throw new TypeError('ComicId must be an integer') }
+    return await $.getJSON(`/comics/${id}`)
   }
 
-  static get_favorites() {
-    return new Promise((resolve, reject) => {
-      $.getJSON('/favorites')
-        .then(response => {
-          resolve(response.favorites);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    })
+  static async get_favorites() {
+    const response = await $.getJSON('/favorites')
+    return response.favorites
   }
 
   static _favoriteEndpoint(favoriteData = {}){
@@ -99,53 +48,30 @@ export default class MarvelData {
     return endpoint;
   }
 
-  static add_favorite(favoriteData = {}) {
-    return new Promise((resolve, reject) => {
+  static async add_favorite(favoriteData = {}) {
+    const characterId = parseInt(favoriteData.characterId, 10);
+    const comicId = parseInt(favoriteData.comicId, 10);
 
-      const characterId = parseInt(favoriteData.characterId, 10);
-      const comicId = parseInt(favoriteData.comicId, 10);
+    if(!characterId && !comicId) { throw new TypeError('CharacterId or ComicId must be set') }
+    if(characterId && comicId) { throw new TypeError('CharacterId and ComicId cannot both be set') }
+    if(!favoriteData.name) { throw new TypeError('Name is required') }
 
-      if(!characterId && !comicId){
-        reject(new TypeError('CharacterId or ComicId must be set'));
-      } else if(characterId && comicId){
-        reject(new TypeError('CharacterId and ComicId cannot both be set'))
-      } else if(!favoriteData.name){
-        reject(new TypeError('Name is required'));
-      }
-
-      $.post(this._favoriteEndpoint(favoriteData))
-        .then(response => {
-          resolve(response.favorite);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+    const response = await $.post(this._favoriteEndpoint(favoriteData))
+    return response.favorite
   }
 
-  static remove_favorite(favoriteData = {}) {
-    return new Promise((resolve, reject) => {
+  static async remove_favorite(favoriteData = {}) {
+    const characterId = parseInt(favoriteData.characterId, 10);
+    const comicId = parseInt(favoriteData.comicId, 10);
 
-      const characterId = parseInt(favoriteData.characterId, 10);
-      const comicId = parseInt(favoriteData.comicId, 10);
+    if(!characterId && !comicId) { throw new TypeError('CharacterId or ComicId must be set') }
+    if(characterId && comicId) { throw new TypeError('CharacterId and ComicId cannot both be set') }
 
-      if(!characterId && !comicId){
-        reject(new TypeError('CharacterId or ComicId must be set'));
-      } else if(characterId && comicId){
-        reject(new TypeError('CharacterId and ComicId cannot both be set'))
-      }
-
-      $.ajax({
-        url: this._favoriteEndpoint(favoriteData),
-        type: 'DELETE'
-        })
-        .then(response => {
-          resolve(response.favorite);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+    const response = await $.ajax({
+      url: this._favoriteEndpoint(favoriteData),
+      type: 'DELETE'
+      })
+    return response.favorite
   }
 
 }

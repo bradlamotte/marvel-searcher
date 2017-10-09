@@ -16,6 +16,7 @@ class MarvelData{
       headers: {
         'Referer': process.env.HOST
       },
+      json: true,
       qs: qs
     }
   }
