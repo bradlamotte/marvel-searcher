@@ -54,6 +54,24 @@ describe('CharacterSearchBox', function(){
     });
   });
 
+  describe('when _getSuggestionValue called', () => {
+    it('should return correct name', () => {
+      const name = characterSearchBox().instance()._getSuggestionValue({id: 123, name: 'Hulk'})
+      expect(name).toEqual('Hulk')
+    })
+  })
+
+  describe('when _renderSuggestion called', () => {
+    it('a div is rendered', () => {
+      const rendered = characterSearchBox().instance()._renderSuggestion({
+        id: 123,
+        name: 'Hulk',
+        thumbnail: {}
+      })
+      expect(rendered.type).toBe('div')
+    })
+  })
+
   describe('when SearchBox asks for suggestions', ()=> {
     it('_getSuggestions calls MarvelData.character_search with the correct parameter', ()=> {
       expect.assertions(1)

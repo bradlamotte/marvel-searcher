@@ -54,6 +54,24 @@ describe('SearchBox integration', function(){
     });
   })
 
+  describe('when _getSuggestionValue called', () => {
+    it('should return correct title', () => {
+      const title = comicSearchBox().instance()._getSuggestionValue({id: 123, title: 'Avengers'})
+      expect(title).toEqual('Avengers')
+    })
+  })
+
+  describe('when _renderSuggestion called', () => {
+    it('a div is rendered', () => {
+      const rendered = comicSearchBox().instance()._renderSuggestion({
+        id: 123,
+        title: 'Avengers',
+        thumbnail: {}
+      })
+      expect(rendered.type).toBe('div')
+    })
+  })
+
   describe('when SearchBox asks for suggestions', ()=> {
     it('_getSuggestions calls MarvelData.comic_search with the correct parameter', ()=> {
       expect.assertions(1)
