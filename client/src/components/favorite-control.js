@@ -57,7 +57,7 @@ export default class FavoriteControl extends React.Component{
   render(){
     return(
       <div className={`favorite-control ${this.state.isFavorite ? 'is-favorite' : ''}`}>
-        <a href onClick={this._changeStatus}>
+        <a href="" onClick={this._changeStatus}>
           <Glyphicon glyph={this.state.isFavorite ? 'heart' : 'heart-empty'}></Glyphicon>
           <span>
             { this.state.isFavorite ? 'One of your favorites!' : 'Add to your favorites!' }
